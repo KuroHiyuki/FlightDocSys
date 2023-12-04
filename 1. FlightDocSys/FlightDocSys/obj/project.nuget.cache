@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "qdM6sfoGkfdnY3hhpbtzqfRT5jB43ae58LMJ/4SSNJKRx1JMgarpA/BTkbSS1ODmnsiaZ9kkdMrj0D05/Zwj0A==",
+  "dgSpecHash": "2ZXXkWL3rD5j4/HNhnBCA67fkyaGoiz4K4zCEd+EBai08Axfcnfy7m7xJ6X8GoK9GNJ8gLAuvIxzMl8RIq+Yxw==",
   "success": true,
   "projectFilePath": "C:\\Disk C\\Skill\\Intern\\Alta software\\FlightDocs System-20230916T065245Z-001\\FlightDocs System\\1. FlightDocSys\\FlightDocSys\\FlightDocSys.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\PHUONG\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
+    "C:\\Users\\PHUONG\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",
@@ -71,7 +73,7 @@
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.codeanalysis.razor\\6.0.0\\microsoft.codeanalysis.razor.6.0.0.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.codeanalysis.scripting.common\\4.0.0\\microsoft.codeanalysis.scripting.common.4.0.0.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.codeanalysis.workspaces.common\\4.0.0\\microsoft.codeanalysis.workspaces.common.4.0.0.nupkg.sha512",
-    "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\PHUONG\\.nuget\\packages\\microsoft.data.sqlite.core\\6.0.23\\microsoft.data.sqlite.core.6.0.23.nupkg.sha512",

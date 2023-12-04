@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FlightDocSysContext>();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 
