@@ -276,3 +276,5 @@ C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\Flig
 C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\FlightDocs System\1. FlightDocSys\FlightDocSys\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\FlightDocs System\1. FlightDocSys\FlightDocSys\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\FlightDocs System\1. FlightDocSys\FlightDocSys\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\FlightDocs System\1. FlightDocSys\FlightDocSys\bin\Debug\net6.0\AutoMapper.dll
+C:\Disk C\Skill\Intern\Alta software\FlightDocs System-20230916T065245Z-001\FlightDocs System\1. FlightDocSys\FlightDocSys\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

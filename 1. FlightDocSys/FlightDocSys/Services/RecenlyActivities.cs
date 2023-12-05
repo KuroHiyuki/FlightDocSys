@@ -1,4 +1,6 @@
 ﻿using FlightDocSys.Models;
+using FlightDocSys.Models.Context;
+using FlightDocSys.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 

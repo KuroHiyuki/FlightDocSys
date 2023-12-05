@@ -1,4 +1,7 @@
 using FlightDocSys.Models;
+using FlightDocSys.Models.Context;
+using FlightDocSys.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FlightDocSysContext>();
 builder.Services.AddAutoMapper(typeof(Program));
-
+builder.Services.AddScoped<IRecentlyActivities>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
