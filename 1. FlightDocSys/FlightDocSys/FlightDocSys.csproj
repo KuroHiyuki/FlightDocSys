@@ -25,7 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Authentication\" />
+    <Folder Include="Services\Mobile\" />
   </ItemGroup>
 
 </Project>

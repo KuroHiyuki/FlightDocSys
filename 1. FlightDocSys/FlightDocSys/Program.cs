@@ -1,6 +1,7 @@
-using FlightDocSys.Models;
+
 using FlightDocSys.Models.Context;
-using FlightDocSys.Services;
+
+using FlightDocSys.Services.CMS;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FlightDocSysContext>();
-builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddScoped<IRecentlyActivities>();
+builder.Services.AddAutoMapper(typeof(Program));                                                                                                                                                               
+#region IService Scope
+builder.Services.AddScoped<IDocumentList, DocumentList>();
+builder.Services.AddScoped<IFlightList,FlightList>();
+builder.Services.AddScoped<IDocumentTypeList,DocumentTypeList>();
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
