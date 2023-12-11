@@ -1,4 +1,4 @@
-﻿using FlightDocSys.Services.CMS;
+﻿using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,15 +8,15 @@ namespace FlightDocSys.Controllers
     [ApiController]
     public class FlightListControllers : ControllerBase
     {
-        private readonly IFlightList _FlightListrepo;
+        private readonly IFlight _FlightListrepo;
 
 
-        public FlightListControllers(IFlightList repo)
+        public FlightListControllers(IFlight repo)
         {
             _FlightListrepo = repo;
         }
         [HttpGet]
-        public async Task<IActionResult> getAllDocumentListAsync()
+        public async Task<IActionResult> GetAllDocumentListAsync()
         {
             try
             {

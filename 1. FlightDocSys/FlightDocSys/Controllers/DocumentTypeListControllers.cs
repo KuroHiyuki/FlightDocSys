@@ -1,5 +1,5 @@
 ﻿using FlightDocSys.Models.View;
-using FlightDocSys.Services.CMS;
+using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +9,17 @@ namespace FlightDocSys.Controllers
     [ApiController]
     public class DocumentTypeListControllers : ControllerBase
     {
-        private readonly IDocumentTypeList _repo;
-        public DocumentTypeListControllers(IDocumentTypeList repo)
+        private readonly IDocumentType _repo;
+        public DocumentTypeListControllers(IDocumentType repo)
         {
             _repo = repo;
         }
         [HttpGet]
-        public async Task<IActionResult> getAllDocumentTypeListAsync()
+        public async Task<IActionResult> GetAllDocumentTypeListAsync()
         {
             try
             {
-                return Ok(await _repo.getAllDocumentTypeListAsync());
+                return Ok(await _repo.GetAllDocumentTypeListAsync());
             }
             catch
             {
@@ -27,14 +27,14 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> getOneDocumentTypeViewAsync(int id)
+        public async Task<IActionResult> GetOneDocumentTypeViewAsync(int id)
         {
-            var Document = await _repo.getOneDocumentTypeViewAsync(id);
+            var Document = await _repo.GetOneDocumentTypeViewAsync(id);
             return Document == null ? NotFound() : Ok(Document);
 
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateDocumentTypeListAsync(int id, DocumentTypeListView model)
+        public async Task<IActionResult> UpdateDocumentTypeListAsync(int id, DocumentTypeView model)
         {
             await _repo.UpdateDocumentTypeListAsync(id,model);
             return NoContent();

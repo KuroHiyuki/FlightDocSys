@@ -25,9 +25,10 @@ namespace FlightDocSys.Models.Entities
         public bool StatusCode { get; set; }
         public int RoleId { get; set; }
         public virtual Role? Role { get; set; }
-        public virtual ICollection<Document_Type> Document_Types { get; set; }
-        public virtual ICollection<UserDocument> UserDocuments { get; set; }
-        public virtual ICollection<UserFlight> UserFlights { get; set; }
-        public virtual ICollection<UserGroup> UserGroups { get; set; }
+        public virtual ICollection<Document_Type>? Document_Types { get; set; }
+        public virtual ICollection<UserDocument>? UserDocuments { get; set; }
+        public virtual ICollection<UserFlight>? UserFlights { get; set; }
+        public virtual ICollection<UserGroup>? UserGroups { get; set; }
+        public virtual Setting Setting { get; set; } = null!;
     }
 }

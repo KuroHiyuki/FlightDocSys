@@ -205,6 +205,28 @@ namespace FlightDocSys.Migrations
                     b.ToTable("ROUTE", (string)null);
                 });
 
+            modelBuilder.Entity("FlightDocSys.Models.Entities.Setting", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Logo");
+
+                    b.Property<int>("Theme")
+                        .HasColumnType("int")
+                        .HasColumnName("Theme");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserId")
+                        .HasName("PK_UserId");
+
+                    b.ToTable("SETTING", (string)null);
+                });
+
             modelBuilder.Entity("FlightDocSys.Models.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -399,6 +421,17 @@ namespace FlightDocSys.Migrations
                     b.Navigation("Route");
                 });
 
+            modelBuilder.Entity("FlightDocSys.Models.Entities.Setting", b =>
+                {
+                    b.HasOne("FlightDocSys.Models.Entities.User", "User")
+                        .WithOne("Setting")
+                        .HasForeignKey("FlightDocSys.Models.Entities.Setting", "UserId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Setting_User");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FlightDocSys.Models.Entities.User", b =>
                 {
                     b.HasOne("FlightDocSys.Models.Entities.Role", "Role")
@@ -574,6 +607,9 @@ namespace FlightDocSys.Migrations
             modelBuilder.Entity("FlightDocSys.Models.Entities.User", b =>
                 {
                     b.Navigation("Document_Types");
+
+                    b.Navigation("Setting")
+                        .IsRequired();
 
                     b.Navigation("UserDocuments");
 

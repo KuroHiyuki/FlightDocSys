@@ -25,6 +25,7 @@ namespace FlightDocSys.Models.Context
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<Entities.Route> Routes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Setting> Settings { get; set; } = null!;
 
         #endregion
 
@@ -47,6 +48,17 @@ namespace FlightDocSys.Models.Context
         #region CreateModel
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Setting>(Entity =>
+            {
+                Entity.ToTable("SETTING");
+                Entity.HasKey(e => e.UserId)
+                    .HasName("PK_UserId");
+                Entity.Property(e => e.Theme)
+                    .IsRequired()
+                    .HasColumnName("Theme");
+                Entity.Property(e => e.Logo)
+                    .HasColumnName("Logo");
+            });
             modelBuilder.Entity<Document>(entity =>
             {
                 entity.ToTable("DOCUMENT");
@@ -205,6 +217,11 @@ namespace FlightDocSys.Models.Context
                      .HasForeignKey(d => d.RoleId)
                      .OnDelete(DeleteBehavior.ClientSetNull)
                      .HasConstraintName("FK_USER_ROLE");
+                entity.HasOne(d => d.Setting)
+                    .WithOne(p => p.User)
+                    .HasForeignKey<Setting>(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Setting_User");
             });
 
             modelBuilder.Entity<GroupPermission>(entity =>
