@@ -5,14 +5,14 @@ namespace FlightDocSys.Authentication
     public class SignUp
     {
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required, EmailAddress]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; } 
         [Required]
-        public int? NumberPhone { get; set; }
+        public string? NumberPhone { get; set; }
         [Required]
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; } 
         [Required]
-        public string ConfirmPassword { get; set; } = null!;
+        public string? ConfirmPassword { get; set; }
     }
 }

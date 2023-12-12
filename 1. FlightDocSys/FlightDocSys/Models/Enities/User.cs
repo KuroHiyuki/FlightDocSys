@@ -17,14 +17,8 @@ namespace FlightDocSys.Models.Entities
             Categories  = new HashSet<Category>();
             Documents = new HashSet<Document>();
         }
-        [Key]
-        public string? UserId { get; set; }
         public string? Name { get; set; }
         [Required,EmailAddress]
-        public string? AddressEmail { get; set; }
-        [Required]
-        public string Password { get; set; } = null!;
-        public int? NumberPhone { get; set; }
         public bool IsAdmin { get; set; } = false;
         public bool IsActived { get; set; } = true;
         public virtual ICollection<Category>? Categories { get; set; }

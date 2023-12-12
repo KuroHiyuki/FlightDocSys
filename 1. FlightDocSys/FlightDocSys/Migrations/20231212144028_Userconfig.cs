@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FlightDocSys.Migrations
 {
-    public partial class Dbinit : Migration
+    public partial class Userconfig : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -67,11 +67,7 @@ namespace FlightDocSys.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    AddressEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    NumberPhone = table.Column<int>(type: "int", nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsActived = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using FlightDocSys.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,7 @@ builder.Services.AddScoped<ISetting, FlightDocSys.Services.CMS.Service.Setting>(
 builder.Services.AddScoped<IGroupPermission,FlightDocSys.Services.CMS.Service.GroupPermission>();
 builder.Services.AddScoped<IDocumentDetail, FlightDocSys.Services.CMS.Service.DocumentDetail>();
 builder.Services.AddScoped<IFlightDetail, FlightDocSys.Services.CMS.Service.FlightDetail>();
+builder.Services.AddScoped<IAccountService,AccountService>();
 #endregion
 
 var app = builder.Build();

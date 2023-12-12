@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FlightDocSys.Authentication;
 using FlightDocSys.Models.Entities;
 using FlightDocSys.Models.Relation;
 using FlightDocSys.Models.View;
@@ -70,6 +71,17 @@ namespace FlightDocSys.Models
                 .ForMember(des => des.Note, act => act.MapFrom(src => src.Note))
                 .ForMember(des => des.UserName, act => act.MapFrom(src => src.UserGroups.Select(ud => ud.User!.Email).FirstOrDefault()));
             #endregion
+
+            //#region Account
+            //CreateMap<User, SignUp>()
+            //    .ForMember(des => des.Name, act => act.MapFrom(src => src.Name))
+            //    .ForMember(des => des.NumberPhone, act => act.MapFrom(src => src.NumberPhone))
+            //    .ForMember(des => des.Password, act => act.MapFrom(src => src.Password))
+            //    .ForMember(des => des.Email, act => act.MapFrom(src => src.Email));
+            //CreateMap<User, SignIn>()
+            //    .ForMember(des => des.Email, act => act.MapFrom(src => src.Email))
+            //    .ForMember(des => des.Password, act => act.MapFrom(src => src.Password));
+            //#endregion
 
             #endregion
 

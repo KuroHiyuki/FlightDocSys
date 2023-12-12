@@ -31,7 +31,7 @@ namespace FlightDocSys.Services
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, model.Email),
+                new Claim(ClaimTypes.Email, model.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
@@ -53,9 +53,9 @@ namespace FlightDocSys.Services
             var user = new User
             {
                 Name = model.Name,
-                NumberPhone = model.NumberPhone,
+                PhoneNumber = model.NumberPhone,
                 Email = model.Email,
-                UserName = model.Email
+                UserName = model.Email,
             };
 
             return await _userManager.CreateAsync(user, model.Password);

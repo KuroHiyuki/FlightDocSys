@@ -21,7 +21,7 @@ namespace FlightDocSys.Models.Context
         {
         }
         #region Dbcontext Enities
-        public virtual DbSet<User> Users { get; set; } = null!;
+        //public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Category> Categorys { get; set; } = null!;
         public virtual DbSet<Document> Documents { get; set; } = null!;
         public virtual DbSet<Flight> Flights { get; set; } = null!;
@@ -240,13 +240,10 @@ namespace FlightDocSys.Models.Context
             {
                 entity.ToTable("USER");
 
-                entity.Property(e => e.UserId)
-                     .ValueGeneratedNever()
-                    .HasColumnName("UserID");
+                
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
-                entity.Property(e => e.Password).HasMaxLength(50);
 
                 entity.HasOne(d => d.Setting)
                     .WithOne(p => p.User)
