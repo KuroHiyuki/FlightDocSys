@@ -18,49 +18,49 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-        public Task<int> AddDocumentTypeListAsync(DocumentTypeView model)
+        public Task<string?> AddDocumentTypeListAsync(DocumentTypeView model)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteDocumentTypeListAsync(int id)
+        public async Task DeleteDocumentTypeListAsync(string? id)
         {
-            var deleteDocumentType = await _context.Document_Types.SingleOrDefaultAsync(b => b.Document_TypeId == id);
+            var deleteDocumentType = await _context.Categorys.SingleOrDefaultAsync(b => b.CategoryId == id);
             if (deleteDocumentType != null)
             {
-                var relatedUserDocuments = _context.GroupDocumentTypes.Where(ud => ud.Document_TypeId == deleteDocumentType.Document_TypeId);
-                _context.GroupDocumentTypes.RemoveRange(relatedUserDocuments);
-                _context.Document_Types.Remove(deleteDocumentType);
+                var relatedUserDocuments = _context.GroupCategories.Where(ud => ud.CategoryId == deleteDocumentType.CategoryId);
+                _context.GroupCategories.RemoveRange(relatedUserDocuments);
+                _context.Categorys.Remove(deleteDocumentType);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task<ActionResult<List<DocumentTypeView>>> GetAllDocumentTypeListAsync()
         {
-            var Document = await _context.Document_Types
-                .Include(dt => dt.GroupDocumenttypes)
+            var Document = await _context.Categorys
+                .Include(dt => dt.GroupCategories)
                 .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
                 .ToListAsync();
             return _mapper.Map<List<DocumentTypeView>>(Document!);
         }
 
-        public async Task<DocumentTypeView> GetOneDocumentTypeViewAsync(int id)
+        public async Task<DocumentTypeView> GetOneDocumentTypeViewAsync(string? id)
         {
-            var Document = await _context.Document_Types
-                .Include(dt => dt.GroupDocumenttypes)
+            var Document = await _context.Categorys
+                .Include(dt => dt.GroupCategories)
                 .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
-                .FirstOrDefaultAsync(dt => dt.Document_TypeId == id);
+                .FirstOrDefaultAsync(dt => dt.CategoryId == id);
             return _mapper.Map<DocumentTypeView>(Document);
         }
 
-        public async Task UpdateDocumentTypeListAsync(int id, DocumentTypeView model)
+        public async Task UpdateDocumentTypeListAsync(string? id, DocumentTypeView model)
         {
             if (id == model.Document_TypeId)
             {
-                var updateDocumentType = _mapper.Map<Document_Type>(model);
-                _context.Document_Types.Update(updateDocumentType);
+                var updateDocumentType = _mapper.Map<Category>(model);
+                _context.Categorys.Update(updateDocumentType);
                 await _context.SaveChangesAsync();
             }
         }

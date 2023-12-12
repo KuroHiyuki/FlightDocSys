@@ -11,15 +11,15 @@ namespace FlightDocSys.Models.Entities
     {
         public Group() 
         {
-            GroupDocumenttypes = new HashSet<GroupDocumenttype>();
+            GroupCategories = new HashSet<GroupCategory>();
             GroupPermissions = new HashSet<GroupPermission>();
             UserGroups = new HashSet<UserGroup>();
         }
         [Key ]
-        public int GroupId { get; set; }
-        public string Name { get; set; } = null!;
+        public string? GroupId { get; set; }
+        public string? Name { get; set; } = null!;
         public string? Note { get; set; }
-        public virtual ICollection<GroupDocumenttype> GroupDocumenttypes { get; set; }
+        public virtual ICollection<GroupCategory> GroupCategories { get; set; }
         public virtual ICollection<GroupPermission> GroupPermissions { get; set; }
         public virtual ICollection<UserGroup> UserGroups { get; set; }
     }

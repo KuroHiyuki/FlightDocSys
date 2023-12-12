@@ -3,32 +3,34 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FlightDocSys.Models.Relation;
+using Microsoft.AspNetCore.Identity;
 
 namespace FlightDocSys.Models.Entities
 {
     [Table("USER")]
-    public partial class User
+    public partial class User: IdentityUser
     {
         public User() 
         {
             UserFlights = new HashSet<UserFlight>();
             UserGroups = new HashSet<UserGroup>();
-            UserDocuments = new HashSet<UserDocument>();
+            Categories  = new HashSet<Category>();
+            Documents = new HashSet<Document>();
         }
         [Key]
-        public int UserId { get; set; }
+        public string? UserId { get; set; }
         public string? Name { get; set; }
-        public string Email { get; set; } = null!;
-        public string PasswordHash { get; set; } = null!;
-        public string PasswordSalt { get; set; } = null!;
+        [Required,EmailAddress]
+        public string? AddressEmail { get; set; }
+        [Required]
+        public string Password { get; set; } = null!;
         public int? NumberPhone { get; set; }
-        public bool StatusCode { get; set; }
-        public int RoleId { get; set; }
-        public virtual Role? Role { get; set; }
-        public virtual ICollection<Document_Type>? Document_Types { get; set; }
-        public virtual ICollection<UserDocument>? UserDocuments { get; set; }
+        public bool IsAdmin { get; set; } = false;
+        public bool IsActived { get; set; } = true;
+        public virtual ICollection<Category>? Categories { get; set; }
         public virtual ICollection<UserFlight>? UserFlights { get; set; }
         public virtual ICollection<UserGroup>? UserGroups { get; set; }
-        public virtual Setting Setting { get; set; } = null!;
+        public virtual Setting? Setting { get; set; }
+        public virtual ICollection<Document>? Documents { get; set; }
     }
 }

@@ -16,13 +16,13 @@ namespace FlightDocSys.Models.Entities
         }
 
         [Key]
-        public int FlightId { get; set; }
-        public string Name { get; set; } = null!;
-        public DateTime DepartureDate { get; set; }
-        public string RouteId { get; set; } = null!;
+        public string? FlightId { get; set; }
+        public string? Name { get; set; } 
+        public DateTime DeparturedDate { get; set; }
+        public string? RouteId { get; set; } 
         public virtual Route? Route { get; set; }
-        public virtual ICollection<Document> Documents { get; set; }
-        public virtual ICollection<UserFlight> UserFlights { get; set; }
+        public virtual ICollection<Document>? Documents { get; set; }
+        public virtual ICollection<UserFlight>? UserFlights { get; set; }
 
     }
 }

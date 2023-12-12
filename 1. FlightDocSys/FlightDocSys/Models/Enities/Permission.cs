@@ -12,12 +12,11 @@ namespace FlightDocSys.Models.Entities
         public Permission() 
         {
             GroupPermissions = new HashSet<GroupPermission>();
-            RolePermissions = new HashSet<RolePermission>();
         }
         [Key]
-        public int PermissionId { get; set; }
+        public string? PermissionId { get; set; }
         public string Name { get; set; } = null!;
         public virtual ICollection<GroupPermission> GroupPermissions { get; set; }
-        public virtual ICollection<RolePermission> RolePermissions { get; set; }
+        
     }
 }

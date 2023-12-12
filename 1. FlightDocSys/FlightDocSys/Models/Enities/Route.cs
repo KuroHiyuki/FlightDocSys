@@ -15,7 +15,7 @@ namespace FlightDocSys.Models.Entities
         public string RouteId { get; set; } = null!;
         public string PointOfloading { get; set; } = null!;
         public string PointOfunloading { get; set; } = null!;
-        public short? Duration { get; set; }
+        public decimal? Duration { get; set; }
         public virtual ICollection<Flight> Flights { get; set; }
     }
 }

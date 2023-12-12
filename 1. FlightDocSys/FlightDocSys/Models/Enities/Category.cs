@@ -6,22 +6,22 @@ using FlightDocSys.Models.Relation;
 
 namespace FlightDocSys.Models.Entities
 {
-    [Table("DOCUMENT_TYPE")]
-    public partial class Document_Type
+    [Table("CATEGORY")]
+    public partial class Category
     {
-        public Document_Type() 
+        public Category() 
         { 
             Documents = new HashSet<Document>();
-            GroupDocumenttypes = new HashSet<GroupDocumenttype>();
+            GroupCategories = new HashSet<GroupCategory>();
         }  
         [Key]
-        public int Document_TypeId { get; set; }
-        public string Name { get; set; } = null!;
-        public int UserId { get; set; }
+        public string? CategoryId { get; set; }
+        public string? Name { get; set; }
+        public string? UserId { get; set; }
         public string? Description { get; set; }
-        public DateTime? CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
-        public virtual ICollection<GroupDocumenttype> GroupDocumenttypes { get; set; }
+        public virtual ICollection<GroupCategory> GroupCategories { get; set; }
         public virtual User? User { get; set; }
     }
 }

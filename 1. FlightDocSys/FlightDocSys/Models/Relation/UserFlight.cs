@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlightDocSys.Models.Relation
 {
-    [Table("UserFlight")]
+    [Table("USER_FLIGHT")]
     public class UserFlight
     {
-        public int UserId { get; set; }
-        public int FlightId { get; set; }
+        public string? UserId { get; set; }
+        public string? FlightId { get; set; }
         public virtual Flight? Flight { get; set;}
         public virtual User? User { get; set; }
     }

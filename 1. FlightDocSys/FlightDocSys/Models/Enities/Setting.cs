@@ -10,9 +10,10 @@ namespace FlightDocSys.Models.Entities
     public class Setting
     {
         public Theme Theme { get; set; }
-        public string? Logo { get; set; }
+        public string? NameLogo { get; set; }
+        public string? FilePath { get; set; }
         public DateTime UpdateDate { get; set; }
-        public int UserId { get; set; }
+        public string? UserId { get; set; }
         public virtual User? User { get; set; }
     }
 }

@@ -5,14 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlightDocSys.Models
 {
-    [Table("UserGroup")]
+    [Table("USER_GROUP")]
     public partial class UserGroup
     {
-        public int UserId { get; set; }
-        public int GroupId { get; set; }
+        public string? UserId { get; set; }
+        public string? GroupId { get; set; }
         public DateTime CreateDate { get; set; }
         public virtual User? User { get; set; }
         public virtual Group? Group { get; set; }
-
     }
 }

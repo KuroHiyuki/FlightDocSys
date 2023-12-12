@@ -35,9 +35,8 @@ namespace FlightDocSys.Services.CMS.Service
         {
             var Document = await _context.Documents
                 .Include(document => document.Flight)
-                .Include(document => document.Document_Type)
-                .Include(document => document.UserDocuments)
-                .ThenInclude(document => document.User)
+                .Include(document => document.Category)
+                .Include(document => document.User)
                 .ToListAsync();
             return _mapper.Map<List<DocumentView>>(Document!);
         }
@@ -46,9 +45,8 @@ namespace FlightDocSys.Services.CMS.Service
         {
             var Document = await _context.Documents
                 .Include(document => document.Flight)
-                .Include(document => document.Document_Type)
-                .Include(document => document.UserDocuments)
-                .ThenInclude(document => document.User)
+                .Include(document => document.Category)
+                .Include(document => document.User)
                 .FirstOrDefaultAsync(document => document.Name == NameDocument);
             return _mapper.Map<DocumentView>(Document);
         }

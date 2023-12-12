@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using FlightDocSys.Models.Enities;
 using FlightDocSys.Models.Relation;
 
 namespace FlightDocSys.Models.Entities
@@ -11,20 +12,25 @@ namespace FlightDocSys.Models.Entities
     {
         public Document() 
         {
-            UserDocuments = new HashSet<UserDocument>();
+            Histories = new HashSet<History>();
         }
 
         [Key]
-        public int DocumentId { get; set; }
-        public string Name { get; set; } = null!;
-        public DateTime CreateDate { get; set; }
+        public string? DocumentId { get; set; }
+        public string? Name { get; set; }
+        public DateTime UpdatedDate { get; set; }
         public decimal Version { get; set; }
-        public string Filepath { get; set; } = null!;
+        public string? Filepath { get; set; }
+        public string? FileType { get; set; }
         public string? Note { get; set; }
-        public int FlightId { get; set; }
-        public int Document_TypeId { get; set; }
+        public string? FlightId { get; set; }
+        public string? CategoryId { get; set; }
+        public string? UserId { get; set; }
         public virtual Flight? Flight { get; set; }
-        public virtual Document_Type? Document_Type { get; set; }
-        public virtual ICollection<UserDocument> UserDocuments { get; set; }
+        public virtual Category? Category { get; set; }
+        public virtual User? User { get; set; }
+        public virtual IsConfirmed? IsConfirmed { get; set; }
+        public virtual ICollection<History> Histories { get; set; }
+
     }
 }

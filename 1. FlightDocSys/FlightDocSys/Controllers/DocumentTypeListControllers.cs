@@ -27,20 +27,20 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("id")]
-        public async Task<IActionResult> GetOneDocumentTypeViewAsync(int id)
+        public async Task<IActionResult> GetOneDocumentTypeViewAsync(string id)
         {
             var Document = await _repo.GetOneDocumentTypeViewAsync(id);
             return Document == null ? NotFound() : Ok(Document);
 
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateDocumentTypeListAsync(int id, DocumentTypeView model)
+        public async Task<IActionResult> UpdateDocumentTypeListAsync(string id, DocumentTypeView model)
         {
             await _repo.UpdateDocumentTypeListAsync(id,model);
             return NoContent();
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument(int id)
+        public async Task<IActionResult> DeleteDocument(string id)
         {
             await _repo.DeleteDocumentTypeListAsync(id);
             return NoContent();

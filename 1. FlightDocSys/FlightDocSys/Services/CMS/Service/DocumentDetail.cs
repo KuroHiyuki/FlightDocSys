@@ -23,8 +23,8 @@ namespace FlightDocSys.Services.CMS.Service
             var deleteDocumentDetail = await _context.Documents.SingleOrDefaultAsync(b => b.Name == NameDocument);
             if (deleteDocumentDetail != null)
             {
-                var relatedUserDocuments = _context.UserDocuments.Where(ud => ud.DocumentId == deleteDocumentDetail.DocumentId);
-                _context.UserDocuments.RemoveRange(relatedUserDocuments);
+                //var relatedUserDocuments = _context.UserDocuments.Where(ud => ud.DocumentId == deleteDocumentDetail.DocumentId);
+                //_context.UserDocuments.RemoveRange(relatedUserDocuments);
                 _context.Documents.Remove(deleteDocumentDetail);
                 await _context.SaveChangesAsync();
             }
@@ -33,9 +33,8 @@ namespace FlightDocSys.Services.CMS.Service
         public async Task<ActionResult<List<DocumentDetailView>>> GetAllDocumentDetailAsync()
         {
             var Document = await _context.Documents
-                .Include(document => document.Document_Type)
-                .Include(document => document.UserDocuments)
-                .ThenInclude(document => document.User)
+                .Include(document => document.Category)
+                .Include(document => document.User)
                 .ToListAsync();
             return _mapper.Map<List<DocumentDetailView>>(Document!);
         }
@@ -43,9 +42,8 @@ namespace FlightDocSys.Services.CMS.Service
         public async Task<DocumentDetailView> GetOneDocumentDetailAsync(string NameDocument)
         {
             var Document = await _context.Documents
-                .Include(document => document.Document_Type)
-                .Include(document => document.UserDocuments)
-                .ThenInclude(document => document.User)
+                .Include(document => document.Category)
+                .Include(document => document.User)
                 .FirstOrDefaultAsync(document => document.Name == NameDocument);
             return _mapper.Map<DocumentDetailView>(Document!);
         }

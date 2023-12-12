@@ -2,7 +2,7 @@
 {
     public class DocumentTypeView
     {
-        public int Document_TypeId { get; set; }
+        public string? Document_TypeId { get; set; }
         public string Document_TypeName { get; set; } = null!;
         public string? Username { get; set; }
         public string? Despcription { get; set; }
