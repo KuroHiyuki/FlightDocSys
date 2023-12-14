@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Services.CMS.IService
 {
-    public interface IFlightDetail
+    public interface IFlightService
     {
+        public Task<ActionResult<List<FlightView>>> getAllFlightListAsync();
         public Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync();
         public Task<FlightDetailView> GetOneFlightDetailAsync(string Name);
         //public Task<int> AddDocumentListAsync(FlightDetailView model);

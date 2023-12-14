@@ -1,11 +1,15 @@
-﻿using FlightDocSys.Models.Entities;
-using FlightDocSys.Models.View;
+﻿using FlightDocSys.Models.View;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Services.CMS.IService
 {
-    public interface IDocumentDetail
+    public interface IDocumentService
     {
+        public Task<ActionResult<List<DocumentView>>> GetAllDocumentListAsync();
+        public Task<DocumentView> GetDocumentDetailViewAsync(string DocumentId);
+        public Task<string> AddDocumentListAsync(DocumentView model);
+        //public Task UpdateDocumentListAsync(string NameDocument, DocumentView model);
+        //public Task DeleteDocumentListAsync(string NameDocument);
         public Task<ActionResult<List<DocumentDetailView>>> GetAllDocumentDetailAsync();
         public Task<DocumentDetailView> GetOneDocumentDetailAsync(string NameDocument);
         //public Task<int> AddDocumentListAsync(DocumentDetailView model);

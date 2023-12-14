@@ -10,17 +10,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocSys.Services.CMS.Service
 {
-    public class GroupPermission : IGroupPermission
+    public class GroupPermissionService : IGroupPermissionService
     {
         private readonly FlightDocSysContext _context;
         private readonly IMapper _mapper;
-        //private readonly UserManager<User> _userManager;
 
-        public GroupPermission(FlightDocSysContext context, IMapper mapper) //UserManager<User> userManager)
+        public GroupPermissionService(FlightDocSysContext context, IMapper mapper) 
         {
             _context = context;
             _mapper = mapper;
-            //_userManager = userManager;
         }
         //public async Task<string> AddGroupPerissionListAsync(GroupPermissionView model)
         //{

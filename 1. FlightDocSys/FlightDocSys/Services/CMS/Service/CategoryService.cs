@@ -8,17 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocSys.Services.CMS.Service
 {
-    public class DocumentType : IDocumentType
+    public class CategoryService : ICategoryService
     {
         private readonly FlightDocSysContext _context;
         private readonly IMapper _mapper;
 
-        public DocumentType(FlightDocSysContext context, IMapper mapper)
+        public CategoryService(FlightDocSysContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-        public Task<string?> AddDocumentTypeListAsync(DocumentTypeView model)
+        public Task<string?> AddDocumentTypeListAsync(CategoryView model)
         {
             throw new NotImplementedException();
         }
@@ -35,27 +35,27 @@ namespace FlightDocSys.Services.CMS.Service
             }
         }
 
-        public async Task<ActionResult<List<DocumentTypeView>>> GetAllDocumentTypeListAsync()
+        public async Task<ActionResult<List<CategoryView>>> GetAllDocumentTypeListAsync()
         {
             var Document = await _context.Categorys
                 .Include(dt => dt.GroupCategories)
                 .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
                 .ToListAsync();
-            return _mapper.Map<List<DocumentTypeView>>(Document!);
+            return _mapper.Map<List<CategoryView>>(Document!);
         }
 
-        public async Task<DocumentTypeView> GetOneDocumentTypeViewAsync(string? id)
+        public async Task<CategoryView> GetOneDocumentTypeViewAsync(string? id)
         {
             var Document = await _context.Categorys
                 .Include(dt => dt.GroupCategories)
                 .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
                 .FirstOrDefaultAsync(dt => dt.CategoryId == id);
-            return _mapper.Map<DocumentTypeView>(Document);
+            return _mapper.Map<CategoryView>(Document);
         }
 
-        public async Task UpdateDocumentTypeListAsync(string? id, DocumentTypeView model)
+        public async Task UpdateDocumentTypeListAsync(string? id, CategoryView model)
         {
             if (id == model.Document_TypeId)
             {

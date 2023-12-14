@@ -14,5 +14,6 @@ namespace FlightDocSys.Authentication
         public string? Password { get; set; } 
         [Required]
         public string? ConfirmPassword { get; set; }
+        public int Role {  get; set; } = 1;
     }
 }

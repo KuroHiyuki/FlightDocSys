@@ -7,10 +7,10 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DocumentTypeListControllers : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IDocumentType _repo;
-        public DocumentTypeListControllers(IDocumentType repo)
+        private readonly ICategoryService _repo;
+        public CategoryController(ICategoryService repo)
         {
             _repo = repo;
         }
@@ -34,7 +34,7 @@ namespace FlightDocSys.Controllers
 
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateDocumentTypeListAsync(string id, DocumentTypeView model)
+        public async Task<IActionResult> UpdateDocumentTypeListAsync(string id, CategoryView model)
         {
             await _repo.UpdateDocumentTypeListAsync(id,model);
             return NoContent();

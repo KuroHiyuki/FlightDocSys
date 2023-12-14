@@ -1,6 +1,6 @@
 ﻿namespace FlightDocSys.Models.View
 {
-    public class DocumentTypeView
+    public class CategoryView
     {
         public string? Document_TypeId { get; set; }
         public string Document_TypeName { get; set; } = null!;

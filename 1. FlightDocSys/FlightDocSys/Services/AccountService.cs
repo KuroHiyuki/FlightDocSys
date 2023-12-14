@@ -13,28 +13,40 @@ namespace FlightDocSys.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+        public AccountService(UserManager<User> userManager, SignInManager<User> signInManager, 
+            IConfiguration configuration, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
         public async Task<string> SignInAsync(SignIn model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
-
-            if (!result.Succeeded)
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            //if (!model.Email!.EndsWith("vietjetair.com"))
+            //{
+            //    return "Đuôi email phải kết thúc bằng vietjetair.com";
+            //}
+            if (user == null || !passwordValid)
             {
-                return string.Empty;
+                return "Email không chính xác hoặc sai mật khẩu";
             }
-
+           
             var authClaims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, model.Email!),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
-
+            var userRoles = await _userManager.GetRolesAsync(user);
+            foreach (var role in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, role.ToString()));
+            }
+            
             var authenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
             var token = new JwtSecurityToken(
@@ -47,9 +59,12 @@ namespace FlightDocSys.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
         public async Task<IdentityResult> SignUpAsync(SignUp model)
         {
+            if(!model.Email!.EndsWith("@vietjetair.com"))
+            {
+                return IdentityResult.Failed();
+            }
             var user = new User
             {
                 Name = model.Name,
@@ -58,7 +73,56 @@ namespace FlightDocSys.Services
                 UserName = model.Email,
             };
 
-            return await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded)
+            {
+                switch(model.Role)
+                {
+                    case 1:
+                        {
+                            if (!await _roleManager.RoleExistsAsync(RoleBase.Pilot))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Pilot));
+                            }
+                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
+                            await _userManager.AddToRoleAsync(user, RoleBase.Pilot);
+                            break;
+                        }
+                    case 2:
+                        {
+                            if (!await _roleManager.RoleExistsAsync(RoleBase.Crew))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Crew));
+                            }
+                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
+                            await _userManager.AddToRoleAsync(user, RoleBase.Crew);
+                            break;
+                        }
+                    case 3:
+                        {
+                            if (!await _roleManager.RoleExistsAsync(RoleBase.BackOffice))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.BackOffice));
+                            }
+                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
+                            await _userManager.AddToRoleAsync(user, RoleBase.BackOffice);
+                            break;
+                        }
+                    case 4:
+                        {
+                            user.IsAdmin = true;
+                            if (!await _roleManager.RoleExistsAsync(RoleBase.Admin))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Admin));
+                            }
+                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
+                            await _userManager.AddToRoleAsync(user, RoleBase.Admin);
+                            break;
+                        }
+                }
+            }
+            return result;
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Services.CMS.IService
 {
-    public interface IGroupPermission
+    public interface IGroupPermissionService
     {
         public Task<ActionResult<List<GroupPermissionView>>> GetAllGroupPermisionListAsync();
         public Task<GroupPermissionView> GetOneGroupPermissionViewAsync(string Name);

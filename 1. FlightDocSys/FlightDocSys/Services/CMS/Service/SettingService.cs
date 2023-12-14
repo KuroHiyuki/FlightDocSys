@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocSys.Services.CMS.Service
 {
-    public class Setting : ISetting
+    public class SettingService : ISettingService
     {
         private readonly FlightDocSysContext _context;
         private readonly IMapper _mapper;
 
-        public Setting(FlightDocSysContext context, IMapper mapper)
+        public SettingService(FlightDocSysContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

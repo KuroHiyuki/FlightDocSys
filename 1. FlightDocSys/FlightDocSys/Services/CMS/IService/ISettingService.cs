@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Services.CMS.IService
 {
-    public interface ISetting
+    public interface ISettingService
     {
         public Task<ActionResult<List<SettingView>>> GetSettingAsync();
         //public Task<SettingView> getDocumentDetailViewAsync(string NameDocument);

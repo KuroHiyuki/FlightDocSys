@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FlightDocSys.Services.CMS.Service
 {
-    public class Flight : IFlight
+    public class FlightService : IFlightService
     {
         private readonly FlightDocSysContext _context;
         private readonly IMapper _mapper;
 
-        public Flight(FlightDocSysContext context, IMapper mapper)
+        public FlightService(FlightDocSysContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -22,10 +22,23 @@ namespace FlightDocSys.Services.CMS.Service
             var Flight = await _context.Flights
                 .Include(f => f.Documents)
                 .Include(f => f.Route)
-                .Include(f => f.UserFlights)
-                .ThenInclude(f => f.User)
                 .ToListAsync();
             return _mapper.Map<List<FlightView>>(Flight);
+        }
+        public async Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync()
+        {
+            var Document = await _context.Flights
+                .Include(dt => dt.Route)
+                .ToListAsync();
+            return _mapper.Map<List<FlightDetailView>>(Document!);
+        }
+
+        public async Task<FlightDetailView> GetOneFlightDetailAsync(string Name)
+        {
+            var Document = await _context.Flights
+                .Include(dt => dt.Route)
+                .FirstOrDefaultAsync(document => document.Name == Name);
+            return _mapper.Map<FlightDetailView>(Document!);
         }
     }
 }

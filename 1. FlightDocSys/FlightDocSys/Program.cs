@@ -44,41 +44,40 @@ builder.Services.AddSwaggerGen(option =>
         }
     });
 });
+
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
 builder.Services.AddDbContext<FlightDocSysContext>();
+
 builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddIdentity<User,IdentityRole>()
     .AddEntityFrameworkStores<FlightDocSysContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddAuthentication(option =>
-{
-    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; 
-    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(option =>
-{
-    option.SaveToken = true;
-    option.RequireHttpsMetadata = false;
-    option.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
-        ValidIssuer = builder.Configuration["JWT: ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-            .GetBytes(builder.Configuration["JWT: Secret"]))
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
-
 });
 
 #region IService Scope
-builder.Services.AddScoped<IDocument, FlightDocSys.Services.CMS.Service.Document>();
-builder.Services.AddScoped<IFlight, FlightDocSys.Services.CMS.Service.Flight>();
-builder.Services.AddScoped<IDocumentType,DocumentType>();
-builder.Services.AddScoped<ISetting, FlightDocSys.Services.CMS.Service.Setting>();
-builder.Services.AddScoped<IGroupPermission,FlightDocSys.Services.CMS.Service.GroupPermission>();
-builder.Services.AddScoped<IDocumentDetail, FlightDocSys.Services.CMS.Service.DocumentDetail>();
-builder.Services.AddScoped<IFlightDetail, FlightDocSys.Services.CMS.Service.FlightDetail>();
+builder.Services.AddScoped<IDocumentService, FlightDocSys.Services.CMS.Service.DocumentService>();
+builder.Services.AddScoped<IFlightService, FlightDocSys.Services.CMS.Service.FlightService>();
+builder.Services.AddScoped<ICategoryService,CategoryService>();
+builder.Services.AddScoped<ISettingService, FlightDocSys.Services.CMS.Service.SettingService>();
+builder.Services.AddScoped<IGroupPermissionService,FlightDocSys.Services.CMS.Service.GroupPermissionService>();
 builder.Services.AddScoped<IAccountService,AccountService>();
 #endregion
 
@@ -92,9 +91,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

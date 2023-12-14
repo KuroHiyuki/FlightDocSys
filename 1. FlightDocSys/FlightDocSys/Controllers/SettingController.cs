@@ -7,11 +7,11 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SettingControllers : ControllerBase
+    public class SettingController : ControllerBase
     {
-        private readonly ISetting _repo;
+        private readonly ISettingService _repo;
 
-        public SettingControllers(ISetting repo) 
+        public SettingController(ISettingService repo) 
         {
             _repo = repo;
         }

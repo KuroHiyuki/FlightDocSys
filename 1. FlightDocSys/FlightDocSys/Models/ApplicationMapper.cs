@@ -16,18 +16,19 @@ namespace FlightDocSys.Models
                 .ForMember(des => des.DocumentName, act => act.MapFrom(src => src.Name))
                 .ForMember(des => des.FlightName, act => act.MapFrom(src => src.Flight!.Name))
                 .ForMember(des => des.DepartureDate, act => act.MapFrom(src => src.Flight!.DeparturedDate))
-                .ForMember(des => des.CreateDate, act => act.MapFrom(src => src.UpdatedDate))
-                .ForMember(des => des.DocumentTypeName, act => act.MapFrom(src => src.Category!.Name))
-                .ForMember(des => des.UserName, act => act.MapFrom(src => src.User!.Name!.FirstOrDefault()));
+                .ForMember(des => des.CategoryName, act => act.MapFrom(src => src.Category!.Name))
+                .ForMember(des => des.UserName, act => act.MapFrom(src => src.User!.Name!.FirstOrDefault()))
+                .ReverseMap();
             #endregion
 
             #region DocumentDetail
             CreateMap<Document, DocumentDetailView>()
                 .ForMember(des => des.DocumentName, act => act.MapFrom(src => src.Name))
-                .ForMember(des => des.DocumentTypeName, act => act.MapFrom(src => src.Category!.Name))
+                .ForMember(des => des.CategoryName, act => act.MapFrom(src => src.Category!.Name))
                 .ForMember(des => des.Note, act => act.MapFrom(src => src.Note))
                 .ForMember(des => des.UserName, act => act.MapFrom(src => src.User!.Name!.FirstOrDefault()))
-                .ForMember(des => des.Version, act => act.MapFrom(src => src.Version));
+                .ForMember(des => des.Version, act => act.MapFrom(src => src.Version))
+                .ReverseMap();
             #endregion
 
             #region FlightView
@@ -48,7 +49,7 @@ namespace FlightDocSys.Models
             #endregion
 
             #region DocumentTypeView
-            CreateMap<Category,DocumentTypeView>()
+            CreateMap<Category,CategoryView>()
                 .ForMember(des => des.Document_TypeId, act => act.MapFrom(src => src.CategoryId))
                 .ForMember(des => des.Document_TypeName, act => act.MapFrom(src => src.Name))
                 .ForMember(des => des.Username, act => act.MapFrom(src => src.User!.Name))

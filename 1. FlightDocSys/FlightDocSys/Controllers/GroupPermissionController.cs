@@ -8,10 +8,10 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupPermissionControllers : ControllerBase
+    public class GroupPermissionController : ControllerBase
     {
-        private readonly IGroupPermission _repo;
-        public GroupPermissionControllers(IGroupPermission repo)
+        private readonly IGroupPermissionService _repo;
+        public GroupPermissionController(IGroupPermissionService repo)
         {
             _repo = repo;
         }

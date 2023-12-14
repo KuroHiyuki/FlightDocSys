@@ -6,15 +6,28 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlightDetailControllers : ControllerBase
+    public class FlightController : ControllerBase
     {
-        private readonly IFlightDetail _repo;
+        private readonly IFlightService _repo;
 
-        public FlightDetailControllers(IFlightDetail repo) 
-        { 
+
+        public FlightController(IFlightService repo)
+        {
             _repo = repo;
         }
-        [HttpGet]
+        [HttpGet("Flight")]
+        public async Task<IActionResult> GetAllDocumentListAsync()
+        {
+            try
+            {
+                return Ok(await _repo.getAllFlightListAsync());
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpGet("FlightDetail")]
         public async Task<IActionResult> GetFlightDetailAsync()
         {
             try
@@ -38,6 +51,5 @@ namespace FlightDocSys.Controllers
                 return NotFound();
             }
         }
-        
     }
 }
