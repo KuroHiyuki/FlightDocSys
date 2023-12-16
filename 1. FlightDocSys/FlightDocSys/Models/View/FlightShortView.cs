@@ -1,13 +1,13 @@
 ﻿namespace FlightDocSys.Models.View
 {
-    public class FlightDetailView
+    public class FlightShortView
     {
         public string? FlightId { get; set; }
         public string? FlightName { get; set; }
         public DateTime DepartureDate { get; set; }
-        public int TotalFile { get; set; }
+        public DateTime ArrivalDate { get; set; }
+        public int SendFile { get; set; }
+        public int ReturnFile { get; set; }
         public string? RouteId { get; set; }
-        public string? PoL {  get; set; }
-        public string? PoU { get; set;}
     }
 }

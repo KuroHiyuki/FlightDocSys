@@ -5,7 +5,8 @@ namespace FlightDocSys.Services.CMS.IService
 {
     public interface IFlightService
     {
-        public Task<ActionResult<List<FlightView>>> getAllFlightListAsync();
+        //Current Flight
+        public Task<ActionResult<List<CurrentFlightView>>> getCurrentFlightListAsync();
         public Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync();
         public Task<FlightDetailView> GetOneFlightDetailAsync(string Name);
         //public Task<int> AddDocumentListAsync(FlightDetailView model);

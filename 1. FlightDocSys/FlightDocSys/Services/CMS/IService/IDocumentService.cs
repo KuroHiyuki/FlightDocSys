@@ -5,9 +5,11 @@ namespace FlightDocSys.Services.CMS.IService
 {
     public interface IDocumentService
     {
-        public Task<ActionResult<List<DocumentView>>> GetAllDocumentListAsync();
-        public Task<DocumentView> GetDocumentDetailViewAsync(string DocumentId);
-        public Task<string> AddDocumentListAsync(DocumentView model);
+        //Home page//
+        public Task<ActionResult<List<RecentlyActivtiesView>>> GetRecentlyDocumentListAsync();
+
+        public Task<RecentlyActivtiesView> GetDocumentDetailViewAsync(string DocumentId);
+        public Task<string> AddDocumentListAsync(RecentlyActivtiesView model);
         //public Task UpdateDocumentListAsync(string NameDocument, DocumentView model);
         //public Task DeleteDocumentListAsync(string NameDocument);
         public Task<ActionResult<List<DocumentDetailView>>> GetAllDocumentDetailAsync();

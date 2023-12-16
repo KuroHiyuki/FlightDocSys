@@ -36,7 +36,7 @@ namespace FlightDocSys.Controllers
 
         }
         [HttpPost("Document")]
-        public async Task<IActionResult> AddNewDocumentAsync(DocumentView model)
+        public async Task<IActionResult> AddNewDocumentAsync(RecentlyActivtiesView model)
         {
             //var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
             var userId = User.Claims.Where(x => x.Type == "id").FirstOrDefault()?.Value;

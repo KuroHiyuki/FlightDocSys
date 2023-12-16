@@ -21,24 +21,24 @@ namespace FlightDocSys.Services.CMS.Service
         }
 
 
-        public async Task<ActionResult<List<DocumentView>>> GetAllDocumentListAsync()
+        public async Task<ActionResult<List<RecentlyActivtiesView>>> GetAllDocumentListAsync()
         {
             var Document = await _context.Documents
                 .Include(document => document.Flight)
                 .Include(document => document.Category)
                 .Include(document => document.User)
                 .ToListAsync();
-            return _mapper.Map<List<DocumentView>>(Document!);
+            return _mapper.Map<List<RecentlyActivtiesView>>(Document!);
         }
 
-        public async Task<DocumentView> GetDocumentDetailViewAsync(string NameDocument)
+        public async Task<RecentlyActivtiesView> GetDocumentDetailViewAsync(string NameDocument)
         {
             var Document = await _context.Documents
                 .Include(document => document.Flight)
                 .Include(document => document.Category)
                 .Include(document => document.User)
                 .FirstOrDefaultAsync(document => document.DocumentId == NameDocument);
-            return _mapper.Map<DocumentView>(Document);
+            return _mapper.Map<RecentlyActivtiesView>(Document);
         }
 
         public async Task DeleteDocumentDetailAsync(string NameDocument)
@@ -81,7 +81,7 @@ namespace FlightDocSys.Services.CMS.Service
             }
         }
 
-        public async Task<string> AddDocumentListAsync(DocumentView model)
+        public async Task<string> AddDocumentListAsync(RecentlyActivtiesView model)
         {
             var Document = new Document
             {

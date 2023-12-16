@@ -17,13 +17,13 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-        public async Task<ActionResult<List<FlightView>>> getAllFlightListAsync()
+        public async Task<ActionResult<List<CurrentFlightView>>> getAllFlightListAsync()
         {
             var Flight = await _context.Flights
                 .Include(f => f.Documents)
                 .Include(f => f.Route)
                 .ToListAsync();
-            return _mapper.Map<List<FlightView>>(Flight);
+            return _mapper.Map<List<CurrentFlightView>>(Flight);
         }
         public async Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync()
         {

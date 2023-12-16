@@ -11,6 +11,8 @@ namespace FlightDocSys.Models
         public string? UserId { get; set; }
         public string? GroupId { get; set; }
         public DateTime CreateDate { get; set; }
+        public bool IsCreated { get; set; } = true;
+        public bool IsMember { get; set; } = true;
         public virtual User? User { get; set; }
         public virtual Group? Group { get; set; }
     }
