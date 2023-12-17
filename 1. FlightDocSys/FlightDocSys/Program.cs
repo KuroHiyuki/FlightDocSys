@@ -79,6 +79,7 @@ builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddScoped<ISettingService, FlightDocSys.Services.CMS.Service.SettingService>();
 builder.Services.AddScoped<IGroupPermissionService,FlightDocSys.Services.CMS.Service.GroupPermissionService>();
 builder.Services.AddScoped<IAccountService,AccountService>();
+builder.Services.AddScoped<IPermissionService,PermissionService>();
 #endregion
 
 var app = builder.Build();

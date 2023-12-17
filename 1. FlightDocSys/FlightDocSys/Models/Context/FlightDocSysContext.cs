@@ -26,7 +26,6 @@ namespace FlightDocSys.Models.Context
         public virtual DbSet<Document> Documents { get; set; } = null!;
         public virtual DbSet<Flight> Flights { get; set; } = null!;
         public virtual DbSet<Group> Groups { get; set; } = null!;
-        public virtual DbSet<History> Histories { get; set; } = null!;
         public virtual DbSet<IsConfirmed> IsConfirmeds { get; set; } = null!;        
         public virtual DbSet<Permission> Permissions { get; set; } = null!;
         public virtual DbSet<Entities.Route> Routes { get; set; } = null!;
@@ -140,7 +139,7 @@ namespace FlightDocSys.Models.Context
 
                 entity.Property(e => e.DeparturedDate).HasColumnType("DateTime");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.FlightName).HasMaxLength(50);
 
                 entity.Property(e => e.RouteId)
                     .HasMaxLength(10)
@@ -164,7 +163,7 @@ namespace FlightDocSys.Models.Context
                      .ValueGeneratedNever()
                     .HasColumnName("GroupID");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.GroupName).HasMaxLength(50);
 
                 entity.Property(e => e.Note).HasColumnType("text");
 
@@ -180,7 +179,7 @@ namespace FlightDocSys.Models.Context
                      .ValueGeneratedNever()
                     .HasColumnName("PermissionID");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.PermissionName).HasMaxLength(50);
             });
             #endregion
 
@@ -222,7 +221,7 @@ namespace FlightDocSys.Models.Context
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Name)
+                entity.Property(e => e.CategoryName)
                     .HasMaxLength(10)
                     .IsFixedLength();
 
@@ -250,41 +249,6 @@ namespace FlightDocSys.Models.Context
                     .HasForeignKey<Setting>(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Setting_User");
-            });
-            #endregion
-
-            #region History
-            modelBuilder.Entity<History>(entity =>
-            {
-                entity.ToTable("HISTORY");
-
-                entity.Property(e => e.HistoryId)
-                     .ValueGeneratedNever()
-                    .HasColumnName("HistoryId");
-
-                entity.Property(e => e.UpdatedDate)
-                    .HasColumnType("DateTime")
-                    .HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.Name).HasMaxLength(50);
-
-                entity.Property(e => e.Note).HasColumnType("text");
-
-                entity.Property(e => e.Version)
-                    .HasColumnType("decimal(18, 1)")
-                    .HasDefaultValueSql("((1.0))");
-
-                entity.Property(e => e.DocumentId)
-                    .HasColumnName("DocumentId");
-
-                entity.Property(e => e.FileType)
-                    .HasColumnName("FileType");
-                
-                entity.HasOne(d => d.Document)
-                    .WithMany(p => p.Histories)
-                    .HasForeignKey(d => d.DocumentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_History_D");
             });
             #endregion
 

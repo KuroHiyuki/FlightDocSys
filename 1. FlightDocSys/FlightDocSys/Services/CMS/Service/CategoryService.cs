@@ -18,51 +18,69 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-        public Task<string?> AddDocumentTypeListAsync(CategoryView model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task DeleteDocumentTypeListAsync(string? id)
-        {
-            var deleteDocumentType = await _context.Categorys.SingleOrDefaultAsync(b => b.CategoryId == id);
-            if (deleteDocumentType != null)
-            {
-                var relatedUserDocuments = _context.GroupCategories.Where(ud => ud.CategoryId == deleteDocumentType.CategoryId);
-                _context.GroupCategories.RemoveRange(relatedUserDocuments);
-                _context.Categorys.Remove(deleteDocumentType);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task<ActionResult<List<CategoryView>>> GetAllDocumentTypeListAsync()
+        public async Task<ActionResult<List<CategoryShortView>>> GetAllCategoryAsync()
         {
             var Document = await _context.Categorys
                 .Include(dt => dt.GroupCategories)
-                .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
                 .ToListAsync();
-            return _mapper.Map<List<CategoryView>>(Document!);
+            return _mapper.Map<List<CategoryShortView>>(Document!);
         }
-
-        public async Task<CategoryView> GetOneDocumentTypeViewAsync(string? id)
+        public async Task<CategoryShortView> GetCategoryByIdAsync(string id)
         {
             var Document = await _context.Categorys
                 .Include(dt => dt.GroupCategories)
-                .ThenInclude(dt => dt.Group)
                 .Include(dt => dt.User)
                 .FirstOrDefaultAsync(dt => dt.CategoryId == id);
-            return _mapper.Map<CategoryView>(Document);
+            return _mapper.Map<CategoryShortView>(Document);
+        }
+        public async Task<CategoryDetailView> AddCategoryAsync(CategoryDetailView model)
+        {
+            var Document = new Category
+            {
+                CategoryId = Guid.NewGuid().ToString(),
+                CategoryName = model.CategoryName,
+                CreateDate = DateTime.Now,
+                Description = model.Note,
+                UserId = model.UserId
+            };
+            _context.Categorys!.Add(Document);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<CategoryDetailView>(Document);
         }
 
-        public async Task UpdateDocumentTypeListAsync(string? id, CategoryView model)
+        public async Task DeleteCategoryAsync(string? id)
         {
-            if (id == model.Document_TypeId)
+            var Document = await _context.Categorys.SingleOrDefaultAsync(b => b.CategoryId == id);
+            if (Document != null)
             {
-                var updateDocumentType = _mapper.Map<Category>(model);
-                _context.Categorys.Update(updateDocumentType);
+                _context.Categorys.Remove(Document);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<ActionResult<List<CategoryDetailView>>> GetAllCategoryDetailAsync()
+        {
+            var Document = await _context.Categorys
+                .ToListAsync();
+            return _mapper.Map<List<CategoryDetailView>>(Document!);
+        }
+
+        public async Task<CategoryDetailView> GetCategoryDetailByIdAsync(string id)
+        {
+            var Document = await _context.Categorys
+                .FirstOrDefaultAsync(dt => dt.CategoryId == id);
+            return _mapper.Map<CategoryDetailView>(Document!);
+        }
+
+        public async Task UpdateCategoryAsync(string id, CategoryDetailView model)
+        {
+            var checkId = await _context.Categorys.FindAsync(id);
+            if(checkId != null)
+            {
+                var update = _mapper.Map<Category>(model);
+                _context.Categorys.Update(update);
+                await _context.SaveChangesAsync();
+            }  
         }
     }
 }

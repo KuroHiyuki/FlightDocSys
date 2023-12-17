@@ -15,7 +15,7 @@ namespace FlightDocSys.Models.Entities
         }
         [Key]
         public string? PermissionId { get; set; }
-        public string Name { get; set; } = null!;
+        public string PermissionName { get; set; } = null!;
         public virtual ICollection<GroupPermission> GroupPermissions { get; set; }
         
     }

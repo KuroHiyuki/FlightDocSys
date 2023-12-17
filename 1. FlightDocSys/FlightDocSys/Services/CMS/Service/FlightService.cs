@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FlightDocSys.Models.Context;
+using FlightDocSys.Models.Entities;
 using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Mvc;
@@ -17,28 +18,57 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-        public async Task<ActionResult<List<CurrentFlightView>>> getAllFlightListAsync()
+        public async Task<ActionResult<List<FlightShortView>>> GetAllFlightAsync()
         {
-            var Flight = await _context.Flights
-                .Include(f => f.Documents)
-                .Include(f => f.Route)
+            var Document = await _context.Flights
+                .Include(document => document.Route)
+                .Include(document => document.Documents)
                 .ToListAsync();
-            return _mapper.Map<List<CurrentFlightView>>(Flight);
+            return _mapper.Map<List<FlightShortView>>(Document);
+        }
+        public async Task<FlightShortView> GetFlightByIdAsync(string id)
+        {
+            var Document = await _context.Flights
+                .Include(document => document.Route)
+                .Include(document => document.Documents)
+                .FirstOrDefaultAsync(document => document.FlightId == id);
+            return _mapper.Map<FlightShortView>(Document);
+        }
+        public async Task<string> AddFlightAsync(FlightDetailView model)
+        {
+            var AddFlight = _mapper.Map<Flight>(model);
+            await _context.Flights!.AddAsync(AddFlight);
+            await _context.SaveChangesAsync();
+            return AddFlight.FlightId!;
+        }
+
+        public async Task DeleteFlightAsync(string id)
+        {
+            var deleteFlight = await _context.Flights.SingleOrDefaultAsync(b => b.FlightId == id);
+            if (deleteFlight != null)
+            {
+                _context.Flights.Remove(deleteFlight);
+                await _context.SaveChangesAsync();
+            }
         }
         public async Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync()
         {
             var Document = await _context.Flights
-                .Include(dt => dt.Route)
                 .ToListAsync();
-            return _mapper.Map<List<FlightDetailView>>(Document!);
+            return _mapper.Map<List<FlightDetailView>>(Document);
         }
-
-        public async Task<FlightDetailView> GetOneFlightDetailAsync(string Name)
+        public async Task<FlightDetailView> GetFlightDetailByIdAsync(string id)
         {
             var Document = await _context.Flights
-                .Include(dt => dt.Route)
-                .FirstOrDefaultAsync(document => document.Name == Name);
-            return _mapper.Map<FlightDetailView>(Document!);
+                .FirstOrDefaultAsync(document => document.FlightId == id);
+            return _mapper.Map<FlightDetailView>(Document);
+        }
+
+        public async Task UpdateFlightAsync(string id, FlightDetailView model)
+        {
+                var updateFlight = _mapper.Map<Flight>(model);
+                _context.Flights.Update(updateFlight);
+                await _context.SaveChangesAsync();
         }
     }
 }

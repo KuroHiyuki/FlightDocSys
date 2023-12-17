@@ -16,35 +16,24 @@ namespace FlightDocSys.Controllers
         {
             _repo = repo;
         }
-        [HttpGet("Document")]
-        public async Task<IActionResult> GetAllDocumentListAsync()
+        [HttpGet]
+        public async Task<IActionResult> GetAllDocumentAsync()
         {
             try
             {
-                return Ok(await _repo.GetAllDocumentListAsync());
+                return Ok(await _repo.GetAllDocumentAsync());
             }
             catch
             {
                 return BadRequest();
             }
         }
-        [HttpGet("DocumentByName")]
-        public async Task<IActionResult> GetDocumentByNameAsync(string Name)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDocumentByIdAsync(string id)
         {
-            var Document = await _repo.GetDocumentDetailViewAsync(Name);
-            return Document == null ? NotFound() : Ok(Document);
-
-        }
-        [HttpPost("Document")]
-        public async Task<IActionResult> AddNewDocumentAsync(RecentlyActivtiesView model)
-        {
-            //var email = User.Claims.Where(x => x.Type == ClaimTypes.Email).FirstOrDefault()?.Value;
-            var userId = User.Claims.Where(x => x.Type == "id").FirstOrDefault()?.Value;
-
             try
             {
-                var newDocumentId = await _repo.AddDocumentListAsync(model);
-                var Document = await _repo.GetDocumentDetailViewAsync(newDocumentId);
+                var Document = await _repo.GetDocumentByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
             catch
@@ -52,63 +41,71 @@ namespace FlightDocSys.Controllers
                 return BadRequest();
             }
         }
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateDocumentAsync(string NameDocument, DocumentView model)
-        //{
-        //    await _DocumentListrepo.UpdateDocumentListAsync(NameDocument, model);
-        //    return NoContent();
-        //}
-        //[HttpDelete]
-        //public async Task<IActionResult> DeleteDocument(string name)
-        //{
-        //    await _DocumentListrepo.DeleteDocumentListAsync(name);
-        //    return NoContent();
-        //}
         [HttpGet("DocumentDetail")]
-        [Authorize]
-        public async Task<IActionResult> GetDocumentDetailAsync()
+        public async Task<IActionResult> GetAllDocumentDetailAsync()
         {
             try
             {
                 return Ok(await _repo.GetAllDocumentDetailAsync());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("DocumentDetailByName")]
-        public async Task<IActionResult> GetOneDocumentDetailAsync(string name)
-        {
-            try
-            {
-                return Ok(await _repo.GetOneDocumentDetailAsync(name));
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpPut("DocumentDetail")]
-        public async Task<IActionResult> UpdateDocumentDetailAsync(string Name, DocumentDetailView model)
-        {
-            try
-            {
-                await _repo.UpdateDocumentDetailAsync(Name, model);
-                return NoContent();
             }
             catch
             {
                 return BadRequest();
             }
         }
-        [HttpDelete("DocumentDetail")]
-        public async Task<IActionResult> DeleteDocumentDetailAsync(string Name)
+        [HttpGet("DocumentDetail/{id}")]
+        public async Task<IActionResult> GetCategoryDetailByIdAsync(string id)
         {
             try
             {
-                await _repo.DeleteDocumentDetailAsync(Name);
-                return NoContent();
+                var Document = await _repo.GetDocumentDetailByIdAsync(id);
+                return Document == null ? NotFound() : Ok(Document);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPost("AddDocument")]
+        public async Task<IActionResult> AddDocumentAsync(DocumentDetailView model)
+        {
+            try
+            {
+                var newDocument = await _repo.AddDocumentAsync(model);
+                var Document = await _repo.GetDocumentDetailByIdAsync(newDocument);
+                return Document == null ? NotFound() : Ok(Document);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        [HttpPut("UpdateDocument/{id}")]
+        public async Task<IActionResult> UpdateDocumentAsync(string id, [FromBody] DocumentDetailView model)
+        {
+            try
+            {
+                if (id != model.CategoryId)
+                {
+                    return NotFound();
+                }
+                await _repo.UpdateDocumentAsync(id, model);
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpDelete("DeleteDocument/{id}")]
+        public async Task<IActionResult> DeleteDocumentAsync([FromRoute] string id)
+        {
+            try
+            {
+                await _repo.DeleteDocumentAsync(id);
+                return Ok();
             }
             catch
             {

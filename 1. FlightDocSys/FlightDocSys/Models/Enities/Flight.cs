@@ -17,7 +17,7 @@ namespace FlightDocSys.Models.Entities
 
         [Key]
         public string? FlightId { get; set; }
-        public string? Name { get; set; } 
+        public string? FlightName { get; set; } 
         public DateTime DeparturedDate { get; set; }
         public string? RouteId { get; set; } 
         public virtual Route? Route { get; set; }

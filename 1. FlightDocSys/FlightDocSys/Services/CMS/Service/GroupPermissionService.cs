@@ -20,74 +20,55 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-        //public async Task<string> AddGroupPerissionListAsync(GroupPermissionView model)
-        //{
-        //    /*var document = _context.Groups.FirstAsync();
-        //    var group = new Group
-        //    {
-        //        GroupId = document.Group,
-        //        Name = model.GroupName,
-        //        Note = model.Note,
-        //    };
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        return "Không tìm thấy người dùng!";
-        //    }
-        //    var userGroup = new UserGroup
-        //    {
-        //        GroupId = group.GroupId, 
-        //        UserId = model.UserId,
-        //        CreateDate = DateTime.Now
-        //    };
-        //    _context.UserGroups.Add(userGroup);
-        //    await _context.SaveChangesAsync();*/
-        //    return "Thêm dữ liệu thành công!";
-        //}
-        public async Task DeleteGroupPermissionListAsync(string Name)
+        public async Task<ActionResult<List<GroupShortView>>> GetAllGroupAsync()
         {
-            var delete = await _context.Groups.SingleOrDefaultAsync(b => b.Name == Name);
+            var Document = await _context.Groups
+                .Include(document => document.UserGroups)
+                .ThenInclude(document => document.User)
+                .ToListAsync();
+            return _mapper.Map<List<GroupShortView>>(Document);
+        }
+        public async Task<GroupShortView> GetGroupByIdAsync(string id)
+        {
+            var Document = await _context.Groups
+                .Include(document => document.UserGroups)
+                .ThenInclude(document => document.User)
+                .FirstOrDefaultAsync(document => document.GroupId == id);
+            return _mapper.Map<GroupShortView>(Document);
+        }
+        public async Task<string> AddGroupAsync(GroupDetailView model)
+        {
+            var Add = _mapper.Map<Group>(model);
+            await _context.Groups!.AddAsync(Add);
+            await _context.SaveChangesAsync();
+            return Add.GroupId!;
+        }
+        public async Task DeleteGrouptAsync(string id)
+        {
+            var delete = await _context.Groups.SingleOrDefaultAsync(b => b.GroupId == id);
             if (delete != null)
             {
-                var related = _context.UserGroups.Where(ud => ud.GroupId == delete.GroupId);
-                _context.UserGroups.RemoveRange(related);
                 _context.Groups.Remove(delete);
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<ActionResult<List<GroupPermissionView>>> GetAllGroupPermisionListAsync()
+        public async Task<ActionResult<List<GroupDetailView>>> GetAllGroupDetailAsync()
         {
-            var groups = await _context.Groups
-                .Include(dt => dt.UserGroups)
-                .ThenInclude(dt => dt.User)
+            var Document = await _context.Groups
                 .ToListAsync();
-            return _mapper.Map<List<GroupPermissionView>>(groups!);
+            return _mapper.Map<List<GroupDetailView>>(Document);
         }
-
-        public async Task<GroupPermissionView> GetOneGroupPermissionViewAsync(string Name)
+        public async Task<GroupDetailView> GetGroupDetailByIdAsync(string id)
         {
-            var groups = await _context.Groups
-                .Include(dt => dt.UserGroups)
-                .FirstOrDefaultAsync(dt => dt.Name == Name);
-            return _mapper.Map<GroupPermissionView>(groups!);
+            var Document = await _context.Groups
+                .FirstOrDefaultAsync(document => document.GroupId == id);
+            return _mapper.Map<GroupDetailView>(Document);
         }
-
-        public async Task UpdateGroupPermissionListAsync(string Name, GroupPermissionView model)
+        public async Task UpdateGroupAsync(string id, GroupDetailView model)
         {
-            if (Name == model.GroupName)
-            {
-                var updateGroupPermission = _mapper.Map<Group>(model);
-                /*var relatedEntity = _context.UserGroups.FirstOrDefault(ug => ug.GroupId == updateGroupPermission.GroupId);
-                if (relatedEntity != null)
-                {
-                    relatedEntity.CreateDate = model.CreatedDate;
-                    _context.UserGroups.Update(relatedEntity);
-                    
-                }*/
-                _context.Groups.Update(updateGroupPermission);
+                var update = _mapper.Map<Group>(model);
+                _context.Groups.Update(update);
                 await _context.SaveChangesAsync();
-            }
         }
     }
 }

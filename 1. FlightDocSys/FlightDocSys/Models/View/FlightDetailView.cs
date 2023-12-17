@@ -2,7 +2,7 @@
 {
     public class FlightDetailView
     {
-        public string? FlightId { get; set; }
+        public string? FlightId { get; set; } = Guid.NewGuid().ToString();
         public string? FlightName { get; set; }
         public DateTime DepartureDate { get; set; }
         public int TotalFile { get; set; }

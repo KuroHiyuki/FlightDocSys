@@ -17,7 +17,7 @@ namespace FlightDocSys.Models.Entities
         }
         [Key ]
         public string? GroupId { get; set; }
-        public string? Name { get; set; } = null!;
+        public string? GroupName { get; set; } = null!;
         public string? Note { get; set; }
         public virtual ICollection<GroupCategory> GroupCategories { get; set; }
         public virtual ICollection<GroupPermission> GroupPermissions { get; set; }

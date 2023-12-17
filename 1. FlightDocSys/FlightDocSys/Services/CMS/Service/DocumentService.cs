@@ -19,81 +19,63 @@ namespace FlightDocSys.Services.CMS.Service
             _context = context;
             _mapper = mapper;
         }
-
-
-        public async Task<ActionResult<List<RecentlyActivtiesView>>> GetAllDocumentListAsync()
+        public async Task<DocumentShortView> GetDocumentByIdAsync(string id)
+        {
+            var Document = await _context.Documents
+                .Include(document => document.Flight)
+                .Include(document => document.Category)
+                .Include(document => document.User)
+                .FirstOrDefaultAsync(document => document.DocumentId == id);
+            return _mapper.Map<DocumentShortView>(Document);
+        }
+        public async Task<ActionResult<List<DocumentShortView>>> GetAllDocumentAsync()
         {
             var Document = await _context.Documents
                 .Include(document => document.Flight)
                 .Include(document => document.Category)
                 .Include(document => document.User)
                 .ToListAsync();
-            return _mapper.Map<List<RecentlyActivtiesView>>(Document!);
+            return _mapper.Map<List<DocumentShortView>>(Document);
         }
-
-        public async Task<RecentlyActivtiesView> GetDocumentDetailViewAsync(string NameDocument)
+        public async Task<string> AddDocumentAsync(DocumentDetailView model)
         {
-            var Document = await _context.Documents
-                .Include(document => document.Flight)
-                .Include(document => document.Category)
-                .Include(document => document.User)
-                .FirstOrDefaultAsync(document => document.DocumentId == NameDocument);
-            return _mapper.Map<RecentlyActivtiesView>(Document);
+            var AddDocument = _mapper.Map<Document>(model);
+            await _context.Documents!.AddAsync(AddDocument);
+            await _context.SaveChangesAsync();
+            return AddDocument.DocumentId!;
         }
-
-        public async Task DeleteDocumentDetailAsync(string NameDocument)
+        public async Task DeleteDocumentAsync(string id)
         {
-            var deleteDocumentDetail = await _context.Documents.SingleOrDefaultAsync(b => b.Name == NameDocument);
+            var deleteDocumentDetail = await _context.Documents.SingleOrDefaultAsync(b => b.DocumentId == id);
             if (deleteDocumentDetail != null)
             {
-                //var relatedUserDocuments = _context.UserDocuments.Where(ud => ud.DocumentId == deleteDocumentDetail.DocumentId);
-                //_context.UserDocuments.RemoveRange(relatedUserDocuments);
                 _context.Documents.Remove(deleteDocumentDetail);
                 await _context.SaveChangesAsync();
             }
         }
-
         public async Task<ActionResult<List<DocumentDetailView>>> GetAllDocumentDetailAsync()
         {
             var Document = await _context.Documents
-                .Include(document => document.Category)
-                .Include(document => document.User)
                 .ToListAsync();
-            return _mapper.Map<List<DocumentDetailView>>(Document!);
+            return _mapper.Map<List<DocumentDetailView>>(Document);
         }
-
-        public async Task<DocumentDetailView> GetOneDocumentDetailAsync(string DocumentId)
+        public async Task<DocumentDetailView> GetDocumentDetailByIdAsync(string id)
         {
             var Document = await _context.Documents
-                .Include(document => document.Category)
-                .Include(document => document.User)
-                .FirstOrDefaultAsync(document => document.DocumentId == DocumentId);
-            return _mapper.Map<DocumentDetailView>(Document!);
+                .FirstOrDefaultAsync(document => document.DocumentId == id);
+            return _mapper.Map<DocumentDetailView>(Document);
         }
-
-        public async Task UpdateDocumentDetailAsync(string NameDocument, DocumentDetailView model)
+        public async Task UpdateDocumentAsync(string id, DocumentDetailView model)
         {
-            if (NameDocument == model.DocumentName)
+            var checkId = await _context.Documents.FindAsync(id);
+            if (checkId != null)
             {
-                var updateDocumentDetail = _mapper.Map<FlightDocSys.Models.Entities.Document>(model);
+                var updateDocumentDetail = _mapper.Map<Document>(model);
                 _context.Documents.Update(updateDocumentDetail);
                 await _context.SaveChangesAsync();
             }
+            
         }
-
-        public async Task<string> AddDocumentListAsync(RecentlyActivtiesView model)
-        {
-            var Document = new Document
-            {
-                DocumentId = Guid.NewGuid().ToString(),
-                Name = model.DocumentName,
-                UpdatedDate = DateTime.Now,
-                Note = "",
-                FileType = model.DocumentName!.Split('.')[1],
-            };
-            _context.Documents!.Add(Document);
-            await _context.SaveChangesAsync();
-            return Document.DocumentId!;
-        }
+        
     }
 }

@@ -5,12 +5,17 @@ namespace FlightDocSys.Services.CMS.IService
 {
     public interface IFlightService
     {
-        //Current Flight
-        public Task<ActionResult<List<CurrentFlightView>>> getCurrentFlightListAsync();
+        #region Short View
+        public Task<ActionResult<List<FlightShortView>>> GetAllFlightAsync();
+        public Task<FlightShortView> GetFlightByIdAsync(string id);
+        #endregion
+
+        #region Detail View
         public Task<ActionResult<List<FlightDetailView>>> GetAllFlightDetailAsync();
-        public Task<FlightDetailView> GetOneFlightDetailAsync(string Name);
-        //public Task<int> AddDocumentListAsync(FlightDetailView model);
-        //public Task UpdateFlightDetailAsync(string Name, FlightDetailView model);
-        //public Task DeleteFlightDetailAsync(string Name);
+        public Task<FlightDetailView> GetFlightDetailByIdAsync(string id);
+        public Task<string> AddFlightAsync(FlightDetailView model);
+        public Task UpdateFlightAsync(string id, FlightDetailView model);
+        public Task DeleteFlightAsync(string id);
+        #endregion
     }
 }

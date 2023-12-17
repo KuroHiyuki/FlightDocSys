@@ -18,7 +18,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpPost("SignUp")]
-        [Authorize(Roles = RoleBase.Admin)]
+        //[Authorize(Roles = RoleBase.Admin)]
         public async Task<IActionResult> SignUp(SignUp signUpModel)
         {
             var result = await _repo.SignUpAsync(signUpModel);
