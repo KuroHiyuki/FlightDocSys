@@ -22,7 +22,7 @@ namespace FlightDocSys.Services.CMS.Service
         public async Task<string> AddPermissionDetailAsync(PermissionView model)
         {
             var Add = _mapper.Map<Permission>(model);
-            await _context.Permissions!.AddAsync(Add);
+            _context.Permissions!.Add(Add);
             await _context.SaveChangesAsync();
             return Add.PermissionId!;
         }
@@ -53,9 +53,14 @@ namespace FlightDocSys.Services.CMS.Service
 
         public async Task UpdatePermissionDetailAsync(string id, PermissionView model)
         {
+            var checkId = await _context.Categorys.FindAsync(id);
+            if (checkId != null)
+            {
                 var update = _mapper.Map<Permission>(model);
                 _context.Permissions.Update(update);
                 await _context.SaveChangesAsync();
+            }
+            
         }
     }
 }

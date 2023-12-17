@@ -222,7 +222,7 @@ namespace FlightDocSys.Models.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.CategoryName)
-                    .HasMaxLength(10)
+                    .HasMaxLength(50)
                     .IsFixedLength();
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");

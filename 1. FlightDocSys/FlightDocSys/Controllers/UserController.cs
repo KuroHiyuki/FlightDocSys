@@ -1,5 +1,7 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.Authentication;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,20 +9,21 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PermissionController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly IPermissionService _repo;
+        private readonly IUserService _repo;
 
-        public PermissionController(IPermissionService repo)
+        public UserController(IUserService repo)
         {
             _repo = repo;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllPermissionDetailAsync()
+        [Authorize(Roles = RoleBase.Admin)]
+        public async Task<IActionResult> GetAllUserAsync()
         {
             try
             {
-                return Ok(await _repo.GetAllPermissionDetailAsync());
+                return Ok(await _repo.GetAllUserAsync());
             }
             catch
             {
@@ -28,11 +31,12 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetFlightDetailByIdAsync(string id)
+        [Authorize(Roles = RoleBase.Admin)]
+        public async Task<IActionResult> GetUserByIdAsync(string id)
         {
             try
             {
-                var Document = await _repo.GetPermissionDetailByIdAsync(id);
+                var Document = await _repo.GetUserByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
             catch
@@ -40,13 +44,13 @@ namespace FlightDocSys.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("Add")]
-        public async Task<IActionResult> AddPermissionDetailAsync(PermissionView model)
+        [HttpGet("{email}")]
+        [Authorize(Roles = RoleBase.Admin)]
+        public async Task<IActionResult> GetUserByEmailAsync(string email)
         {
             try
             {
-                var newDocument = await _repo.AddPermissionDetailAsync(model);
-                var Document = await _repo.GetPermissionDetailByIdAsync(newDocument);
+                var Document = await _repo.GetUserByEmailAsync(email);
                 return Document == null ? NotFound() : Ok(Document);
             }
             catch
@@ -54,12 +58,14 @@ namespace FlightDocSys.Controllers
                 return BadRequest();
             }
         }
+
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> UpdatePermissionDetailAsync(string id, [FromBody] PermissionView model)
+        [Authorize(Roles = RoleBase.Admin)]
+        public async Task<IActionResult> UpdateUserAsync(string id, [FromBody] UserView model)
         {
             try
             {
-                await _repo.UpdatePermissionDetailAsync(id, model);
+                await _repo.UpdateUserAsync(id, model);
                 return Ok();
             }
             catch
@@ -70,11 +76,12 @@ namespace FlightDocSys.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeletePermissionDetailAsync([FromRoute] string id)
+        [Authorize(Roles = RoleBase.Admin)]
+        public async Task<IActionResult> DeleteUserAsync([FromRoute] string id)
         {
             try
             {
-                await _repo.DeletePermissionDetailAsync(id);
+                await _repo.DeleteUserAsync(id);
                 return Ok();
             }
             catch

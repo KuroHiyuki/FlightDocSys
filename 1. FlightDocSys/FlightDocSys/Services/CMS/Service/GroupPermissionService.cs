@@ -66,9 +66,14 @@ namespace FlightDocSys.Services.CMS.Service
         }
         public async Task UpdateGroupAsync(string id, GroupDetailView model)
         {
+            var checkId = await _context.Categorys.FindAsync(id);
+            if (checkId != null)
+            {
                 var update = _mapper.Map<Group>(model);
                 _context.Groups.Update(update);
                 await _context.SaveChangesAsync();
+            }
+            
         }
     }
 }

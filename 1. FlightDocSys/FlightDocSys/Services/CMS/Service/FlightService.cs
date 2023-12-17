@@ -66,9 +66,14 @@ namespace FlightDocSys.Services.CMS.Service
 
         public async Task UpdateFlightAsync(string id, FlightDetailView model)
         {
+            var checkId = await _context.Categorys.FindAsync(id);
+            if (checkId != null)
+            {
                 var updateFlight = _mapper.Map<Flight>(model);
                 _context.Flights.Update(updateFlight);
                 await _context.SaveChangesAsync();
+            }
+            
         }
     }
 }

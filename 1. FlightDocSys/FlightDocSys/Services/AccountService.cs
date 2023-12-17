@@ -77,46 +77,42 @@ namespace FlightDocSys.Services
 
             if (result.Succeeded)
             {
-                switch(model.Role)
+                if (!await _roleManager.RoleExistsAsync(RoleBase.BackOffice))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(RoleBase.BackOffice));
+                }
+                if (!await _roleManager.RoleExistsAsync(RoleBase.Pilot))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(RoleBase.Pilot));
+                }
+                if (!await _roleManager.RoleExistsAsync(RoleBase.Crew))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(RoleBase.Crew));
+                }
+                if (!await _roleManager.RoleExistsAsync(RoleBase.Admin))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(RoleBase.Admin));
+                }
+                switch (model.Role)
                 {
                     case 1:
                         {
-                            if (!await _roleManager.RoleExistsAsync(RoleBase.Pilot))
-                            {
-                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Pilot));
-                            }
-                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
                             await _userManager.AddToRoleAsync(user, RoleBase.Pilot);
                             break;
                         }
                     case 2:
                         {
-                            if (!await _roleManager.RoleExistsAsync(RoleBase.Crew))
-                            {
-                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Crew));
-                            }
-                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
                             await _userManager.AddToRoleAsync(user, RoleBase.Crew);
                             break;
                         }
                     case 3:
                         {
-                            if (!await _roleManager.RoleExistsAsync(RoleBase.BackOffice))
-                            {
-                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.BackOffice));
-                            }
-                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
                             await _userManager.AddToRoleAsync(user, RoleBase.BackOffice);
                             break;
                         }
                     case 4:
                         {
                             user.IsAdmin = true;
-                            if (!await _roleManager.RoleExistsAsync(RoleBase.Admin))
-                            {
-                                await _roleManager.CreateAsync(new IdentityRole(RoleBase.Admin));
-                            }
-                            //Tạo tài khoản theo hiện tại thì mặc định là với role Pilot
                             await _userManager.AddToRoleAsync(user, RoleBase.Admin);
                             break;
                         }

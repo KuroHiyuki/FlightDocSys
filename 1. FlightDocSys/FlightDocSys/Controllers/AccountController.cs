@@ -18,7 +18,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpPost("SignUp")]
-        //[Authorize(Roles = RoleBase.Admin)]
+        [Authorize(Roles = RoleBase.Admin)]
         public async Task<IActionResult> SignUp(SignUp signUpModel)
         {
             var result = await _repo.SignUpAsync(signUpModel);
@@ -42,16 +42,5 @@ namespace FlightDocSys.Controllers
             }
             return Ok(result);
         }
-        //[HttpGet("User/{id}")]
-        //public async Task<IActionResult> GetUserId(string id)
-        //{
-        //    return Ok(new {UserId=id});
-        //}
-        //[HttpGet("User/currentUserId")]
-        //public async Task<IActionResult> getUserIdAsync()
-        //{
-        //    string email = HttpContext.User.FindFirstValue(ClaimTypes.Role);
-        //    return Ok(new {email=email});
-        //}
     }
 }

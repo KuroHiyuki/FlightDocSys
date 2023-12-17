@@ -108,13 +108,6 @@ namespace FlightDocSys.Models
             //.ReverseMap();
             #endregion
 
-            #region Role 
-            CreateMap<IdentityRole, RoleView>().ReverseMap();
-            //.ForMember(des => des.RoleId, act => act.MapFrom(src => src.Id))
-            //.ForMember(des => des.RoleName, act => act.MapFrom(src => src.Name))
-            //.ReverseMap();
-            #endregion
-
             #region Route 
             CreateMap<Entities.Route, RouteView>().ReverseMap();
             //.ForMember(des => des.RouteId, act => act.MapFrom(src => src.RouteId))

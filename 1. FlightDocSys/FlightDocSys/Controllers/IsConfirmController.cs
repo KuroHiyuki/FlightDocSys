@@ -1,5 +1,6 @@
 ﻿using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class IsConfirmController : ControllerBase
     {
         private readonly IIsConfirmedService _repo;
@@ -16,6 +18,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllIsConfirmAsync()
         {
             try
@@ -28,6 +31,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetIsConfirmByIdAsync(string id)
         {
             try
@@ -41,6 +45,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPost("AddFlight")]
+        [Authorize]
         public async Task<IActionResult> AddGroupAsync(IsConfirmedView model)
         {
             try

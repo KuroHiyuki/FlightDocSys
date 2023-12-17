@@ -1,5 +1,6 @@
 ﻿using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllFlightAsync()
         {
             try
@@ -27,6 +29,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetFlightByIdAsync(string id)
         {
             try
@@ -40,6 +43,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("FlightDetail")]
+        [Authorize]
         public async Task<IActionResult> GetAllFlightDetailAsync()
         {
             try
@@ -52,6 +56,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("FlightDetail/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetFlightDetailByIdAsync(string id)
         {
             try
@@ -65,6 +70,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPost("AddFlight")]
+        [Authorize]
         public async Task<IActionResult> AddDocumentAsync(FlightDetailView model)
         {
             try
@@ -79,14 +85,11 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPut("UpdateFlight/{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateDocumentAsync(string id, [FromBody] FlightDetailView model)
         {
             try
             {
-                if (id != model.FlightId)
-                {
-                    return NotFound();
-                }
                 await _repo.UpdateFlightAsync(id, model);
                 return Ok();
             }
@@ -98,6 +101,7 @@ namespace FlightDocSys.Controllers
         }
 
         [HttpDelete("DeleteFlight/{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteDocumentAsync([FromRoute] string id)
         {
             try

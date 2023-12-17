@@ -1,5 +1,6 @@
 ﻿using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,20 +8,21 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PermissionController : ControllerBase
+    [Authorize]
+    public class RouteController : ControllerBase
     {
-        private readonly IPermissionService _repo;
+        private readonly IRouteService _repo;
 
-        public PermissionController(IPermissionService repo)
+        public RouteController(IRouteService repo)
         {
             _repo = repo;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllPermissionDetailAsync()
+        public async Task<IActionResult> GetAllRouteAsync()
         {
             try
             {
-                return Ok(await _repo.GetAllPermissionDetailAsync());
+                return Ok(await _repo.GetAllRouteAsync());
             }
             catch
             {
@@ -28,11 +30,11 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetFlightDetailByIdAsync(string id)
+        public async Task<IActionResult> GetRouteByIdAsync(string id)
         {
             try
             {
-                var Document = await _repo.GetPermissionDetailByIdAsync(id);
+                var Document = await _repo.GetRouteByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
             catch
@@ -41,12 +43,12 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPost("Add")]
-        public async Task<IActionResult> AddPermissionDetailAsync(PermissionView model)
+        public async Task<IActionResult> AddRouteAsync(RouteView model)
         {
             try
             {
-                var newDocument = await _repo.AddPermissionDetailAsync(model);
-                var Document = await _repo.GetPermissionDetailByIdAsync(newDocument);
+                var newDocument = await _repo.AddRouteAsync(model);
+                var Document = await _repo.GetRouteByIdAsync(newDocument);
                 return Document == null ? NotFound() : Ok(Document);
             }
             catch
@@ -55,11 +57,11 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> UpdatePermissionDetailAsync(string id, [FromBody] PermissionView model)
+        public async Task<IActionResult> UpdateRouteAsync(string id, [FromBody] RouteView model)
         {
             try
             {
-                await _repo.UpdatePermissionDetailAsync(id, model);
+                await _repo.UpdateRouteAsync(id, model);
                 return Ok();
             }
             catch
@@ -70,11 +72,11 @@ namespace FlightDocSys.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        public async Task<IActionResult> DeletePermissionDetailAsync([FromRoute] string id)
+        public async Task<IActionResult> DeleteRouteAsync([FromRoute] string id)
         {
             try
             {
-                await _repo.DeletePermissionDetailAsync(id);
+                await _repo.DeleteRouteAsync(id);
                 return Ok();
             }
             catch

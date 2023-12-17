@@ -17,6 +17,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllDocumentAsync()
         {
             try
@@ -29,6 +30,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetDocumentByIdAsync(string id)
         {
             try
@@ -42,6 +44,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("DocumentDetail")]
+        [Authorize]
         public async Task<IActionResult> GetAllDocumentDetailAsync()
         {
             try
@@ -54,6 +57,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("DocumentDetail/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetCategoryDetailByIdAsync(string id)
         {
             try
@@ -67,6 +71,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPost("AddDocument")]
+        [Authorize]
         public async Task<IActionResult> AddDocumentAsync(DocumentDetailView model)
         {
             try
@@ -81,14 +86,11 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPut("UpdateDocument/{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateDocumentAsync(string id, [FromBody] DocumentDetailView model)
         {
             try
             {
-                if (id != model.CategoryId)
-                {
-                    return NotFound();
-                }
                 await _repo.UpdateDocumentAsync(id, model);
                 return Ok();
             }
@@ -100,6 +102,7 @@ namespace FlightDocSys.Controllers
         }
 
         [HttpDelete("DeleteDocument/{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteDocumentAsync([FromRoute] string id)
         {
             try

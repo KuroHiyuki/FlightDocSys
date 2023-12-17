@@ -1,5 +1,8 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.Authentication;
+using FlightDocSys.Models.Entities;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +18,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpGet]
+        [Authorize()]
         public async Task<IActionResult> GetAllCategoryAsync()
         {
             try
@@ -27,6 +31,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetCategoryByIdAsync(string id)
         {
             try
@@ -40,6 +45,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("CategoryDetail")]
+        [Authorize]
         public async Task<IActionResult> GetAllCategoryDetailAsync()
         {
             try
@@ -52,6 +58,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("CategoryDetail/{id}")]
+        [Authorize]
         public async Task<IActionResult> GetCategoryDetailByIdAsync(string id)
         {
             try
@@ -65,6 +72,7 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpPost("AddCategory")]
+        [Authorize]
         public async Task<IActionResult> AddNewCategoryDetailAsync(CategoryDetailView model)
         {
             try
