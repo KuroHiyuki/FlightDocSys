@@ -24,18 +24,16 @@ namespace FlightDocSys.Models
                 .ForMember(des => des.GroupCount, act => act.MapFrom(src => src.GroupCategories.Count(v => v.CategoryId == src.CategoryId)))
                 .ReverseMap();
 
-            CreateMap<Category, CategoryDetailView>()//.ReverseMap();
-               .ForMember(des => des.CategoryId, act => act.MapFrom(src => src.CategoryId))
-               .ForMember(des => des.CategoryName, act => act.MapFrom(src => src.CategoryName))
-               .ForMember(des => des.CreatedDate, act => act.MapFrom(src => src.CreateDate))
-               .ForMember(des => des.UserId, act => act.MapFrom(src => src.UserId))
-               .ForMember(des => des.Note, act => act.MapFrom(src => src.Description))
-               .ReverseMap()
-               .ForMember(des => des.CategoryId, act => act.MapFrom(src => src.CategoryId))
-               .ForMember(des => des.CategoryName, act => act.MapFrom(src => src.CategoryName))
-               .ForMember(des => des.CreateDate, act => act.MapFrom(src => src.CreatedDate))
-               .ForMember(des => des.UserId, act => act.MapFrom(src => src.UserId))
-               .ForMember(des => des.Description, act => act.MapFrom(src => src.Note));
+            CreateMap<Category, CategoryDetailView>().ReverseMap();
+               //.ForMember(des => des.CategoryName, act => act.MapFrom(src => src.CategoryName))
+               //.ForMember(des => des.CreatedDate, act => act.MapFrom(src => src.CreateDate))
+               //.ForMember(des => des.UserId, act => act.MapFrom(src => src.UserId))
+               //.ForMember(des => des.Description, act => act.MapFrom(src => src.Description))
+               //.ReverseMap()
+               //.ForMember(des => des.CategoryName, act => act.MapFrom(src => src.CategoryName))
+               //.ForMember(des => des.CreateDate, act => act.MapFrom(src => src.CreatedDate))
+               //.ForMember(des => des.UserId, act => act.MapFrom(src => src.UserId))
+               //.ForMember(des => des.Description, act => act.MapFrom(src => src.Description));
 
             #endregion
 
@@ -61,7 +59,7 @@ namespace FlightDocSys.Models
                 .ForMember(des => des.FlightId, act => act.MapFrom(src => src.FlightId))
                 .ForMember(des => des.FlightName, act => act.MapFrom(src => src.FlightName))
                 .ForMember(des => des.DepartureDate, act => act.MapFrom(src => src.DeparturedDate))
-                .ForMember(des => des.RouteId, act => act.MapFrom(src => src.Route!.RouteId.FirstOrDefault()))
+                .ForMember(des => des.RouteId, act => act.MapFrom(src => src.Route!.RouteId))
                 .ForMember(des => des.ArrivalDate, act => act.MapFrom(src => src.DeparturedDate.AddHours((float)src.Route!.Duration!)))
                 .ForMember(des => des.SendFile, act => act.MapFrom(src => src.Documents!.Count(v => (double)v.Version == 1.0 && v.FlightId == src.FlightId)))
                 .ForMember(des => des.ReturnFile, act => act.MapFrom(src => src.Documents!.Count(v => (double)v.Version > 1.0 && v.FlightId == src.FlightId))).ReverseMap();

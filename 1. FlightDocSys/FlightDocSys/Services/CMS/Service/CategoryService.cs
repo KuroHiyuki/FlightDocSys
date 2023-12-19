@@ -36,14 +36,8 @@ namespace FlightDocSys.Services.CMS.Service
         }
         public async Task<CategoryDetailView> AddCategoryAsync(CategoryDetailView model)
         {
-            var Document = new Category
-            {
-                CategoryId = Guid.NewGuid().ToString(),
-                CategoryName = model.CategoryName,
-                CreateDate = DateTime.Now,
-                Description = model.Note,
-                UserId = model.UserId
-            };
+            var Document = _mapper.Map<Category>(model);
+            Document.CategoryId = Guid.NewGuid().ToString();
             _context.Categorys!.Add(Document);
             await _context.SaveChangesAsync();
             return _mapper.Map<CategoryDetailView>(Document);
@@ -79,7 +73,14 @@ namespace FlightDocSys.Services.CMS.Service
             {
                 var update = _mapper.Map<Category>(model);
                 _context.Categorys.Update(update);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch
+                {
+                    _context.RemoveRange();
+                }
             }  
         }
     }

@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +25,7 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetSettingAsync());
             }
-            catch (Exception ex)
+            catch (ExceptionThrow ex)
             {
                 return BadRequest(ex);
             }

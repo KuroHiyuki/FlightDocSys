@@ -1,4 +1,6 @@
 ﻿using FlightDocSys.Authentication;
+using FlightDocSys.Authorize;
+using FlightDocSys.ErrorThrow;
 using FlightDocSys.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
@@ -23,17 +25,20 @@ namespace FlightDocSys.Services
             _configuration = configuration;
             _roleManager = roleManager;
         }
-        public async Task<string> SignInAsync(SignIn model)
+        public async Task<List<AccountInfo>> SignInAsync(SignIn model)
         {
+            var accountInfo = new AccountInfo();
             var user = await _userManager.FindByEmailAsync(model.Email);
             var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
-            //if (!model.Email!.EndsWith("vietjetair.com"))
-            //{
-            //    return "Đuôi email phải kết thúc bằng vietjetair.com";
-            //}
+            if (!model.Email!.EndsWith("vietjetair.com"))
+            {
+                //Response.StatusCode = 401;
+                //return new Exception {  code: 401 ,Value = "Lỗi rồi nè"};
+                throw new ExceptionThrow(4012, "Email phải bắt đầu bằng @vietjetair.com");
+            }
             if (user == null || !passwordValid)
             {
-                return "Email không chính xác hoặc sai mật khẩu";
+                throw new ExceptionThrow(402, "Sai mật khẩu hoặc email không chính xác");
             }
            
             var authClaims = new List<Claim>
@@ -56,8 +61,12 @@ namespace FlightDocSys.Services
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authenKey, SecurityAlgorithms.HmacSha512Signature)
             );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            accountInfo.UserName = model.Email;
+            accountInfo.UserId = user.Id;
+            accountInfo.JWT_Token = new JwtSecurityTokenHandler().WriteToken(token);
+            accountInfo.Role = userRoles[0].ToString();
+            
+            return new List<AccountInfo> { accountInfo };
         }
         public async Task<IdentityResult> SignUpAsync(SignUp model)
         {

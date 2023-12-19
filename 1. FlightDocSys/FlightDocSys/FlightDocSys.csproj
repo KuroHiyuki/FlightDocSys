@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="File\" />
     <Folder Include="Services\Mobile\" />
+	  <Folder Include="ErrorThrow\" />
   </ItemGroup>
 
 </Project>

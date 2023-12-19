@@ -37,6 +37,7 @@ namespace FlightDocSys.Services.CMS.Service
         public async Task<string> AddFlightAsync(FlightDetailView model)
         {
             var AddFlight = _mapper.Map<Flight>(model);
+            AddFlight.FlightId = Guid.NewGuid().ToString();
             await _context.Flights!.AddAsync(AddFlight);
             await _context.SaveChangesAsync();
             return AddFlight.FlightId!;

@@ -1,8 +1,10 @@
 ﻿using FlightDocSys.Authentication;
+using FlightDocSys.ErrorThrow;
 using FlightDocSys.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
+using System.Linq.Expressions;
 using System.Security.Claims;
 
 namespace FlightDocSys.Controllers
@@ -34,13 +36,22 @@ namespace FlightDocSys.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SignIn(SignIn signInModel)
         {
-            var result = await _repo.SignInAsync(signInModel);
-
-            if (string.IsNullOrEmpty(result))
+            
+            try 
             {
-                return Unauthorized();
+                var result = await _repo.SignInAsync(signInModel);
+                return Ok(result);
             }
-            return Ok(result);
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message})
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
+                //return BadRequest("Satus":ex.Message,"Detail":ex.Value);
+            }
+            
         }
     }
 }
