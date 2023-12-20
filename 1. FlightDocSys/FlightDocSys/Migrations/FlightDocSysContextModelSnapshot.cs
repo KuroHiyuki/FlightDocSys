@@ -51,8 +51,8 @@ namespace FlightDocSys.Migrations
                         .HasColumnName("CategoryId");
 
                     b.Property<string>("CategoryName")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
+                        .HasMaxLength(50)
+                        .HasColumnType("nchar(50)")
                         .IsFixedLength();
 
                     b.Property<DateTime>("CreateDate")
@@ -86,12 +86,12 @@ namespace FlightDocSys.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasColumnName("CategoryId");
 
-                    b.Property<string>("FileType")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int>("FileType")
+                        .HasColumnType("int")
                         .HasColumnName("FileType");
 
-                    b.Property<string>("Filepath")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<byte[]>("Filepath")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("FlightId")
                         .HasColumnType("nvarchar(450)")

@@ -7,20 +7,22 @@ using FlightDocSys.Models.Relation;
 
 namespace FlightDocSys.Models.Entities
 {
+    public enum FileType
+    {
+        PDF = 1,
+        DOCX = 2,
+    }
     [Table("DOCUMENT")]
     public partial class Document
     {
-        public Document() 
-        {
-        }
-
         [Key]
         public string? DocumentId { get; set; }
         public string? Name { get; set; }
         public DateTime UpdatedDate { get; set; }
         public decimal Version { get; set; } 
-        public string? Filepath { get; set; }
-        public string? FileType { get; set; }
+        public byte[]? FileData { get; set; }
+        public string? FilePath { get; set; }
+        public FileType FileType { get; set; }
         public string? Note { get; set; }
         public string? FlightId { get; set; }
         public string? CategoryId { get; set; }

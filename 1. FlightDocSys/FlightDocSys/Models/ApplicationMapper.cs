@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using FlightDocSys.Authentication;
+using FlightDocSys.FileHandler;
 using FlightDocSys.Models.Enities;
 using FlightDocSys.Models.Entities;
-using FlightDocSys.Models.Relation;
 using FlightDocSys.Models.View;
-using Microsoft.AspNetCore.Identity;
 
 namespace FlightDocSys.Models
 {
@@ -52,6 +50,7 @@ namespace FlightDocSys.Models
                 .ReverseMap();
 
             CreateMap<Document, DocumentDetailView>().ReverseMap();
+            CreateMap<Document, DocumentFileView>().ReverseMap();
             #endregion
 
             #region Flight

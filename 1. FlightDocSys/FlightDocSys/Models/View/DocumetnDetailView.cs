@@ -1,4 +1,6 @@
-﻿namespace FlightDocSys.Models.View
+﻿using FlightDocSys.Models.Entities;
+
+namespace FlightDocSys.Models.View
 {
     public class DocumentDetailView
     {
@@ -10,8 +12,9 @@
         public string? UserId { get; set; }
         public string? FlightId { get; set;}
         public DateTime UpdatedDate { get; set; }
-        public string? Filepath { get; set; }
-        public string? FileType { get; set; }
+        public string? FilePath { get; set; }
+        public byte[]? FileData { get; set; }
+        public FileType FileType { get; set; }
         public string? PreviousDocumentId { get; set; } = null;
     }
 }

@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+1. FlightDocSys/FlightDocSys/FileHandler/Document
+2. Requirements
+3. Workflow
+4. User Interface
+*.pdf
+*.docx
+*.png
+*.jpeg
+
+

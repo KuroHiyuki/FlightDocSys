@@ -1,6 +1,6 @@
 ﻿using FlightDocSys.Authentication;
+using FlightDocSys.Authorize;
 using FlightDocSys.ErrorThrow;
-using FlightDocSys.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
@@ -20,7 +20,7 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpPost("SignUp")]
-        [Authorize(Roles = RoleBase.Admin)]
+        //[Authorize(Roles = RoleBase.Admin)]
         public async Task<IActionResult> SignUp(SignUp signUpModel)
         {
             var result = await _repo.SignUpAsync(signUpModel);
@@ -49,7 +49,6 @@ namespace FlightDocSys.Controllers
                     StatusCode = ex.StatusCode
                 };
                 return response;
-                //return BadRequest("Satus":ex.Message,"Detail":ex.Value);
             }
             
         }

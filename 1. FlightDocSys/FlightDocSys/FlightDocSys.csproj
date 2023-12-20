@@ -20,9 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="File\" />
+    <Folder Include="FileHandler\Logo\" />
+	  <Folder Include="FileHandler\Document\" />
     <Folder Include="Services\Mobile\" />
-	  <Folder Include="ErrorThrow\" />
+	<Folder Include="ErrorThrow\" />
   </ItemGroup>
 
 </Project>
