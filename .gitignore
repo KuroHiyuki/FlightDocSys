@@ -365,3 +365,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+
+# .gitignore file
+1. FlightDocSys/FlightDocSys/FileHandler/Document/
+*.pdf
+*.docx
+1. FlightDocSys/FlightDocSys/FileHandler/logo/
+*.png 
+*.jpeg
