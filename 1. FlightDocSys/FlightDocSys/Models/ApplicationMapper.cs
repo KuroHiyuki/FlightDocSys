@@ -51,6 +51,8 @@ namespace FlightDocSys.Models
 
             CreateMap<Document, DocumentDetailView>().ReverseMap();
             CreateMap<Document, DocumentFileView>().ReverseMap();
+            CreateMap<Document, DocumentUpdateView_1>().ReverseMap();
+            CreateMap<Document, DocumentUpdateView_2>().ReverseMap();
             #endregion
 
             #region Flight

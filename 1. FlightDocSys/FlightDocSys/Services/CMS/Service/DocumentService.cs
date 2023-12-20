@@ -68,7 +68,7 @@ namespace FlightDocSys.Services.CMS.Service
                 .FirstOrDefaultAsync(document => document.DocumentId == id);
             return _mapper.Map<DocumentDetailView>(Document);
         }
-        public async Task UpdateDocumentAsync(string id, DocumentDetailView model)
+        public async Task UpdateDocumentAsync(string id, DocumentUpdateView_1 model)
         {
             var checkId = await _context.Documents.FindAsync(id);
             if (checkId != null)
@@ -114,6 +114,50 @@ namespace FlightDocSys.Services.CMS.Service
                 var fileDetails = _mapper.Map<Document>(model);
                 fileDetails.DocumentId = Guid.NewGuid().ToString();
                 fileDetails.Version = (decimal)1.0;
+                fileDetails.UpdatedDate = DateTime.Now;
+                fileDetails.Name = fileData.FileName ?? model.Name;
+                string[] parts = fileData.FileName!.Split(".");
+                fileDetails.FileType = parts[1] switch
+                {
+                    "pdf" => (FileType)1,
+                    "docx" => (FileType)2,
+                    _ => 0,
+                };
+                if (fileDetails.FileType == 0)
+                {
+                    throw new ExceptionThrow(405, "Kiểu File không hợp lệ");
+                }
+                using (var stream = new MemoryStream())
+                {
+                    fileData.CopyTo(stream);
+                    fileDetails.FileData = stream.ToArray();
+                }
+                var filepath = Path.Combine(Directory.GetCurrentDirectory(), "FileHandler\\Document", fileDetails.Name!);
+                using (var stream = new FileStream(filepath, FileMode.Create))
+                {
+                    await fileData.CopyToAsync(stream);
+                }
+                var result = await _context.Documents.AddAsync(fileDetails);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task UpdateFileAsync(IFormFile fileData, DocumentUpdateView_2 model)
+        {
+            try
+            {
+                if (model.CategoryId == null || model.UserId == null || model.FlightId == null)
+                {
+                    throw new ExceptionThrow(410, "Nhập thiếu thông tin bắt buộc: Flight ID, Category ID và User ID là bắt buộc");
+                }
+                var pre = _context.Documents.FirstOrDefaultAsync(dt => dt.DocumentId == model.PreviousDocumentId);
+                var fileDetails = _mapper.Map<Document>(model);
+                fileDetails.DocumentId = Guid.NewGuid().ToString();
+                fileDetails.Version = (decimal)((double)pre.Result!.Version+0.1);
                 fileDetails.UpdatedDate = DateTime.Now;
                 fileDetails.Name = fileData.FileName ?? model.Name;
                 string[] parts = fileData.FileName!.Split(".");

@@ -1,10 +1,8 @@
-﻿using FlightDocSys.Authentication;
-using FlightDocSys.ErrorThrow;
+﻿using FlightDocSys.ErrorThrow;
 using FlightDocSys.Models.Entities;
 using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Controllers

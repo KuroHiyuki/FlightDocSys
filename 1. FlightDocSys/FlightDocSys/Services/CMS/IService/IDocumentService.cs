@@ -15,9 +15,10 @@ namespace FlightDocSys.Services.CMS.IService
         public Task<ActionResult<List<DocumentDetailView>>> GetAllDocumentDetailAsync();
         public Task<DocumentDetailView> GetDocumentDetailByIdAsync(string id);
         public Task<string> AddDocumentAsync(DocumentDetailView model);
-        public Task UpdateDocumentAsync(string id, DocumentDetailView model);
+        public Task UpdateDocumentAsync(string id, DocumentUpdateView_1 model);
         public Task DeleteDocumentAsync(string id);
         public Task PostFileAsync(IFormFile fileData, DocumentFileView model);
+        public Task UpdateFileAsync(IFormFile fileData, DocumentUpdateView_2 model);
         public Task<DownloadView> DownloadFileById(string Id);
         #endregion
     }

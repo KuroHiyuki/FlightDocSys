@@ -11,6 +11,7 @@ namespace FlightDocSys.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DocumentController : ControllerBase
     {
         private readonly IDocumentService _repo;
@@ -19,7 +20,6 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllDocumentAsync()
         {
             try
@@ -36,7 +36,6 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetDocumentByIdAsync(string id)
         {
             try
@@ -54,7 +53,6 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("DocumentDetail")]
-        [Authorize]
         public async Task<IActionResult> GetAllDocumentDetailAsync()
         {
             try
@@ -71,7 +69,6 @@ namespace FlightDocSys.Controllers
             }
         }
         [HttpGet("DocumentDetail/{id}")]
-        [Authorize]
         public async Task<IActionResult> GetCategoryDetailByIdAsync(string id)
         {
             try
@@ -88,28 +85,26 @@ namespace FlightDocSys.Controllers
                 return response;
             }
         }
-        [HttpPost("AddDocument")]
-        [Authorize]
-        public async Task<IActionResult> AddDocumentAsync(DocumentDetailView model)
-        {
-            try
-            {
-                var newDocument = await _repo.AddDocumentAsync(model);
-                var Document = await _repo.GetDocumentDetailByIdAsync(newDocument);
-                return Document == null ? NotFound() : Ok(Document);
-            }
-            catch (ExceptionThrow ex)
-            {
-                var response = new ObjectResult(new { status = ex.Message })
-                {
-                    StatusCode = ex.StatusCode
-                };
-                return response;
-            }
-        }
+        //[HttpPost("AddDocument")]
+        //public async Task<IActionResult> AddDocumentAsync(DocumentDetailView model)
+        //{
+        //    try
+        //    {
+        //        var newDocument = await _repo.AddDocumentAsync(model);
+        //        var Document = await _repo.GetDocumentDetailByIdAsync(newDocument);
+        //        return Document == null ? NotFound() : Ok(Document);
+        //    }
+        //    catch (ExceptionThrow ex)
+        //    {
+        //        var response = new ObjectResult(new { status = ex.Message })
+        //        {
+        //            StatusCode = ex.StatusCode
+        //        };
+        //        return response;
+        //    }
+        //}
         [HttpPut("UpdateDocument/{id}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateDocumentAsync(string id, [FromBody] DocumentDetailView model)
+        public async Task<IActionResult> UpdateDocumentAsync(string id, [FromBody] DocumentUpdateView_1 model)
         {
             try
             {
@@ -151,7 +146,7 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.PostFileAsync(file, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
             catch (ExceptionThrow ex)
             {
@@ -162,7 +157,23 @@ namespace FlightDocSys.Controllers
                 return response;
             }
         }
-
+        [HttpPost("UpdatedFile")]
+        public async Task<ActionResult> UpdateFileAsync(IFormFile file, [FromForm] DocumentUpdateView_2 model)
+        {
+            try
+            {
+                await _repo.UpdateFileAsync(file, model);
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
+            }
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
+            }
+        }
 
         [HttpGet("DownloadFile")]
         public async Task<ActionResult> DownloadFile(string id)
