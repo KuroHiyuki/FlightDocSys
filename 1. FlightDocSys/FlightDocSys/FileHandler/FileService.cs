@@ -2,11 +2,8 @@
 using FlightDocSys.ErrorThrow;
 using FlightDocSys.Models.Context;
 using FlightDocSys.Models.Entities;
-using FlightDocSys.Models.View;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 
 namespace FlightDocSys.FileHandler
 {
@@ -52,7 +49,7 @@ namespace FlightDocSys.FileHandler
             {
                 if (model.CategoryId == null || model.UserId == null || model.FlightId == null)
                 {
-                    throw new ExceptionThrow(410, "Nhập thiếu thông tin bắt buộc");
+                    throw new ExceptionThrow(410, "Nhập thiếu thông tin bắt buộc: Flight ID, Category ID và User ID là bắt buộc");
                 }
                 var fileDetails = _mapper.Map<Document>(model);
                 fileDetails.DocumentId = Guid.NewGuid().ToString();
@@ -88,10 +85,5 @@ namespace FlightDocSys.FileHandler
                 throw;
             }
         }
-        //public async Task CopyStream(Stream stream, string downloadPath)
-        //{
-        //    using var fileStream = new FileStream(downloadPath, FileMode.Create, FileAccess.Write);
-        //    await stream.CopyToAsync(fileStream);
-        //}
     }
 }
