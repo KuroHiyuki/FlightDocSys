@@ -1,4 +1,5 @@
 ﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.FileHandler;
 using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
@@ -27,35 +28,64 @@ namespace FlightDocSys.Controllers
             }
             catch (ExceptionThrow ex)
             {
-                return BadRequest(ex);
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateSettingAsync(SettingView model)
+        public async Task<IActionResult> UpdateSettingAsync([FromForm]SettingInputView_1 model)
         {
-            await _repo.UpdateSettingeAsync(model);
-            return NoContent();
-        }
-        [HttpPost("uploadLogo")]
-        public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
-        {
-            long size = files.Sum(f => f.Length);
-
-            foreach (var formFile in files)
+            try
             {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
-
-                    using var stream = System.IO.File.Create(filePath);
-                    await formFile.CopyToAsync(stream);
-                }
+                await _repo.UpdateSettingeAsync(model);
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
-
-            // Process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
-            return Ok(new { count = files.Count, size });
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
+            }
+            
+        }
+        [HttpPost("AddLogo")]
+        public async Task<IActionResult> AddLogoAsync(IFormFile files, [FromForm] SettingInputView_1 model)
+        {
+            try
+            {
+                await _repo.PostLogoAsync(files, model);
+                return Ok(new ObjectResult(new { Status = "Thêm thành công" }));
+            }
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
+            }
+        }
+        [HttpPut("uploadLogo")]
+        public async Task<IActionResult> OnUpdateLogoAsync(IFormFile files,[FromForm]LogoFileView model)
+        {
+            try
+            {
+                await _repo.UpdateLogoAsync(files, model);
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
+            }
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
+            }
         }
     }
 }

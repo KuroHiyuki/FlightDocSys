@@ -116,18 +116,17 @@ namespace FlightDocSys.Models
 
             #region User
             CreateMap<User, UserView>().ReverseMap();
-                //.ForMember(des => des.UserId, act => act.MapFrom(src => src.Id))
-                //.ForMember(des => des.Name, act => act.MapFrom(src => src.Name))
-                //.ForMember(des => des.Email, act => act.MapFrom(src => src.Email))
-                //.ForMember(des => des.IsActived, act => act.MapFrom(src => src.IsActived))
-                //.ForMember(des => des.IsAdmin, act => act.MapFrom(src => src.IsAdmin))
-                //.ReverseMap();
+            //.ForMember(des => des.UserId, act => act.MapFrom(src => src.Id))
+            //.ForMember(des => des.Name, act => act.MapFrom(src => src.Name))
+            //.ForMember(des => des.Email, act => act.MapFrom(src => src.Email))
+            //.ForMember(des => des.IsActived, act => act.MapFrom(src => src.IsActived))
+            //.ForMember(des => des.IsAdmin, act => act.MapFrom(src => src.IsAdmin))
+            //.ReverseMap();
             #endregion
 
             #region Setting
-            CreateMap<Setting, SettingView>()
-                .ForMember(des => des.Theme, act => act.MapFrom(src => src.Theme))
-                .ForMember(des => des.Logo, act => act.MapFrom(src => src.NameLogo));
+            CreateMap<Setting, SettingView>().ReverseMap();
+            CreateMap<Setting, SettingInputView_1>().ReverseMap();
             #endregion
 
             #endregion

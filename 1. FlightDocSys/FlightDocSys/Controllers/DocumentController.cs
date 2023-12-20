@@ -1,4 +1,6 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.FileHandler;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +26,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllDocumentAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("{id}")]
@@ -38,9 +44,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetDocumentByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("DocumentDetail")]
@@ -51,9 +61,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllDocumentDetailAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("DocumentDetail/{id}")]
@@ -65,9 +79,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetDocumentDetailByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPost("AddDocument")]
@@ -80,9 +98,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetDocumentDetailByIdAsync(newDocument);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPut("UpdateDocument/{id}")]
@@ -92,11 +114,15 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.UpdateDocumentAsync(id, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
 
         }
@@ -108,11 +134,51 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.DeleteDocumentAsync(id);
+                return Ok(new ObjectResult(new { Status = "Xoá thành công" }));
+            }
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
+            }
+        }
+        [HttpPost("UploadFile")]
+        public async Task<ActionResult> PostSingleFile(IFormFile file, [FromForm] DocumentFileView model)
+        {
+            try
+            {
+                await _repo.PostFileAsync(file, model);
                 return Ok();
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
+            }
+        }
+
+
+        [HttpGet("DownloadFile")]
+        public async Task<ActionResult> DownloadFile(string id)
+        {
+            try
+            {
+                var result = await _repo.DownloadFileById(id);
+                return File(result.Data!, result.Content!, result.Filepath);
+            }
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode,
+                };
+                return response;
             }
         }
     }

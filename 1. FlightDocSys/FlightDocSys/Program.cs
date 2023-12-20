@@ -11,6 +11,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using FlightDocSys.Authorize;
 using FlightDocSys.FileHandler;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,17 @@ builder.Services.AddAuthentication(options => {
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
+    options.Events = new JwtBearerEvents
+    {
+        OnChallenge = context =>
+        {
+            context.HandleResponse();
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            var result = JsonConvert.SerializeObject(new { Error = "Bạn chưa đăng nhập" });
+            return context.Response.WriteAsync(result);
+        }
+    };
 });
 
 #region IService Scope
@@ -83,7 +95,6 @@ builder.Services.AddScoped<IAccountService,AccountService>();
 builder.Services.AddScoped<IPermissionService,PermissionService>();
 builder.Services.AddScoped<IRouteService, RouteService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IFileService, FIleService>();
 #endregion
 
 var app = builder.Build();

@@ -66,7 +66,7 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.UpdateUserAsync(id, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
             catch
             {
@@ -82,7 +82,7 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.DeleteUserAsync(id);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
             catch
             {

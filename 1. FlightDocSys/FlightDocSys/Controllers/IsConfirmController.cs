@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,9 +26,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllIsConfirmAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("{id}")]
@@ -39,9 +44,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetIsConfirmByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPost("AddFlight")]
@@ -54,9 +63,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetIsConfirmByIdAsync(New);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
     }

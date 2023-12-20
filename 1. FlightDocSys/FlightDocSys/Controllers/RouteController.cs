@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,9 +25,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllRouteAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("{id}")]
@@ -37,9 +42,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetRouteByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPost("Add")]
@@ -51,9 +60,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetRouteByIdAsync(newDocument);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPut("Update/{id}")]
@@ -62,11 +75,15 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.UpdateRouteAsync(id, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
 
         }
@@ -77,7 +94,7 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.DeleteRouteAsync(id);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Xoá thành công" }));
             }
             catch
             {

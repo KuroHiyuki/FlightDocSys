@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +23,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllPermissionDetailAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("{id}")]
@@ -35,9 +40,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetPermissionDetailByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPost("Add")]
@@ -49,9 +58,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetPermissionDetailByIdAsync(newDocument);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPut("Update/{id}")]
@@ -60,11 +73,15 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.UpdatePermissionDetailAsync(id, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
 
         }
@@ -75,7 +92,7 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.DeletePermissionDetailAsync(id);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Xoá thành công" }));
             }
             catch
             {

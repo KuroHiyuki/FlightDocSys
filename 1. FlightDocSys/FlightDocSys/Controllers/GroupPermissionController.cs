@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.ErrorThrow;
+using FlightDocSys.Models.View;
 using FlightDocSys.Services.CMS.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -23,9 +24,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllGroupAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("{id}")]
@@ -37,9 +42,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetGroupByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("FlightDetail")]
@@ -50,9 +59,13 @@ namespace FlightDocSys.Controllers
             {
                 return Ok(await _repo.GetAllGroupDetailAsync());
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpGet("FlightDetail/{id}")]
@@ -64,9 +77,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetGroupDetailByIdAsync(id);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPost("AddFlight")]
@@ -79,9 +96,13 @@ namespace FlightDocSys.Controllers
                 var Document = await _repo.GetGroupDetailByIdAsync(newDocument);
                 return Document == null ? NotFound() : Ok(Document);
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
         [HttpPut("UpdateFlight/{id}")]
@@ -91,11 +112,15 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.UpdateGroupAsync(id, model);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Cập nhật thành công" }));
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
 
         }
@@ -107,11 +132,15 @@ namespace FlightDocSys.Controllers
             try
             {
                 await _repo.DeleteGrouptAsync(id);
-                return Ok();
+                return Ok(new ObjectResult(new { Status = "Xoá thành công" }));
             }
-            catch
+            catch (ExceptionThrow ex)
             {
-                return BadRequest();
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
             }
         }
     }

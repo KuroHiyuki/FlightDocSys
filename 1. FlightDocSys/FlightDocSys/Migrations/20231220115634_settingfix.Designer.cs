@@ -4,6 +4,7 @@ using FlightDocSys.Models.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightDocSys.Migrations
 {
     [DbContext(typeof(FlightDocSysContext))]
-    partial class FlightDocSysContextModelSnapshot : ModelSnapshot
+    [Migration("20231220115634_settingfix")]
+    partial class settingfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

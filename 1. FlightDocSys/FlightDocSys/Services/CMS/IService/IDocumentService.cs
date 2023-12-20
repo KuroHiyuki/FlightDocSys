@@ -1,4 +1,5 @@
-﻿using FlightDocSys.Models.View;
+﻿using FlightDocSys.FileHandler;
+using FlightDocSys.Models.View;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightDocSys.Services.CMS.IService
@@ -16,6 +17,8 @@ namespace FlightDocSys.Services.CMS.IService
         public Task<string> AddDocumentAsync(DocumentDetailView model);
         public Task UpdateDocumentAsync(string id, DocumentDetailView model);
         public Task DeleteDocumentAsync(string id);
+        public Task PostFileAsync(IFormFile fileData, DocumentFileView model);
+        public Task<DownloadView> DownloadFileById(string Id);
         #endregion
     }
 }
