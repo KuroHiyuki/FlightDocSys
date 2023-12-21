@@ -71,7 +71,7 @@ namespace FlightDocSys.Authorize
         {
             if (!model.Email!.EndsWith("@vietjetair.com"))
             {
-                return IdentityResult.Failed();
+                throw new ExceptionThrow(4012, "Email phải bắt đầu bằng @vietjetair.com");
             }
             var user = new User
             {

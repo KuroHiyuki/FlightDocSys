@@ -20,16 +20,26 @@ namespace FlightDocSys.Controllers
             _repo = repo;
         }
         [HttpPost("SignUp")]
-        //[Authorize(Roles = RoleBase.Admin)]
+        [Authorize(Roles = RoleBase.Admin)]
         public async Task<IActionResult> SignUp(SignUp signUpModel)
         {
-            var result = await _repo.SignUpAsync(signUpModel);
-            if (result.Succeeded)
+            try
             {
-                return Ok(result.Succeeded);
+                var result = await _repo.SignUpAsync(signUpModel);
+                if (result.Succeeded)
+                {
+                    return Ok(result.Succeeded);
+                }
+                return Unauthorized();
             }
-
-            return Unauthorized();
+            catch (ExceptionThrow ex)
+            {
+                var response = new ObjectResult(new { status = ex.Message })
+                {
+                    StatusCode = ex.StatusCode
+                };
+                return response;
+            }
         }
 
         [HttpPost("SignIn")]
